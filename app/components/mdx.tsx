@@ -15,6 +15,9 @@ import python from "highlight.js/lib/languages/python";
 import toml from "highlight.js/lib/languages/ini"; // toml uses ini highlighter
 import yaml from "highlight.js/lib/languages/yaml";
 import json from "highlight.js/lib/languages/json";
+import dockerfile from "highlight.js/lib/languages/dockerfile";
+
+import remarkGfm from "remark-gfm";
 
 import "highlight.js/styles/github-dark.css";
 
@@ -29,6 +32,7 @@ hljs.registerLanguage("python", python);
 hljs.registerLanguage("toml", toml);
 hljs.registerLanguage('yaml', yaml);
 hljs.registerLanguage('json', json);
+hljs.registerLanguage('dockerfile', dockerfile);
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -75,7 +79,8 @@ function RoundedImage(props) {
 }
 
 function Code({ children, ...props }) {
-  const language = props.className?.replace(/^language-/, "") || "plaintext";
+  const rawLanguage = props.className?.replace(/^language-/, "") || "plaintext";
+  const language = hljs.getLanguage(rawLanguage) ? rawLanguage : "plaintext";
 
   let codeHTML = hljs.highlight(children, { language }).value;
   return (
@@ -138,6 +143,12 @@ export function CustomMDX(props) {
     <MDXRemote
       {...props}
       components={{ ...components, ...(props.components || {}) }}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+          rehypePlugins: [],
+        },
+      }}
     />
   );
 }
