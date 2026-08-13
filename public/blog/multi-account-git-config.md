@@ -147,4 +147,4 @@ To add more Git identities:
 
 Now each directory will automatically use the correct Git identity, SSH key, and commit signing setup.
 
-*P.S. I made a CLI tool in Go that sets all this up for you—check it out here: [nobleknightt/git-config](https://github.com/nobleknightt/git-config)*
+*P.S. I made a CLI tool in Go that sets all this up for you—check it out here: [iajaydandge/git-config](https://github.com/iajaydandge/git-config)*

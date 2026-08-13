@@ -109,7 +109,7 @@ The server runs as a single container: one FastAPI process, one SQLite file, and
 The plugin ships as a **Claude Code marketplace**, which is just a `marketplace.json` hosted in a GitHub repo. You point Claude Code at the repo, then install with the key and server URL you got from the dashboard:
 
 ```bash
-claude plugin marketplace add nobleknightt/claude-usage-plugin
+claude plugin marketplace add iajaydandge/claude-usage-plugin
 claude plugin install claude-usage@claude-usage \
   --config API_KEY=<your-key> --config BASE_URL=<your-server-url>
 ```
@@ -118,4 +118,4 @@ The hooks start recording on your next session. It's small enough to self-host i
 
 Almost none of this was about fighting Claude Code. It hands you transcripts and hooks and gets out of the way. The work was in what came after the data: surviving an offline laptop, not trusting the client, and figuring out what a "turn" even is. Though, as usual, that last one was tougher than it looked.
 
-The full source (plugin, server, and dashboard) is on GitHub: [nobleknightt/claude-usage-plugin](https://github.com/nobleknightt/claude-usage-plugin).
+The full source (plugin, server, and dashboard) is on GitHub: [iajaydandge/claude-usage-plugin](https://github.com/iajaydandge/claude-usage-plugin).

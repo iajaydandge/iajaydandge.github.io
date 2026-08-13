@@ -9,6 +9,9 @@ import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
+  alternates: {
+    canonical: "./",
+  },
   title: {
     default: "Ajay Dandge — Software Developer",
     template: "%s — Ajay Dandge",

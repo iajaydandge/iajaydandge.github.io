@@ -6,7 +6,7 @@ summary: "How I built a developer CLI that tunnels through a bastion host over S
 
 At work, our PostgreSQL database sits behind a bastion host. You cannot connect to it directly — every connection has to go through an SSH tunnel first. This is standard practice for securing RDS instances in a VPC, but it makes ad-hoc querying tedious. You have to open a tunnel in one terminal, connect with `psql` in another, and remember to clean up after yourself.
 
-I wanted something simpler: a single command that opens the tunnel, runs the query, prints the result, and disappears. That became [burrow](https://github.com/nobleknightt/burrow).
+I wanted something simpler: a single command that opens the tunnel, runs the query, prints the result, and disappears. That became [burrow](https://github.com/iajaydandge/burrow).
 
 ## Why the name
 
@@ -120,7 +120,7 @@ burrow = "burrow.cli:main"
 Installing is one command:
 
 ```bash
-uv tool install git+https://github.com/nobleknightt/burrow.git
+uv tool install git+https://github.com/iajaydandge/burrow.git
 ```
 
 `uv tool install` puts the binary in `~/.local/bin` in its own isolated environment, so burrow's dependencies never conflict with anything else on your system. No virtualenv management, no `pip install --user` quirks.
@@ -131,4 +131,4 @@ There is a hidden command that does not appear in `--help`. If you find it, it p
 
 ---
 
-Burrow is small and does one thing. The source is at [github.com/nobleknightt/burrow](https://github.com/nobleknightt/burrow) — install instructions, config reference, and usage examples are all in the README.
+Burrow is small and does one thing. The source is at [github.com/iajaydandge/burrow](https://github.com/iajaydandge/burrow) — install instructions, config reference, and usage examples are all in the README.

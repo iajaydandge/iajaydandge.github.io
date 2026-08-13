@@ -4,7 +4,7 @@ publishedAt: "2026-06-22"
 summary: "Three additions to burrow: per-profile read-only access that blocks write statements at the client level, a non-interactive config set command for scripting, and skill installation across multiple coding agents via the Agent Skills standard."
 ---
 
-A few more additions to [burrow](https://github.com/nobleknightt/burrow) since the [last post](https://ajaydandge.dev/blog/burrow-adds-mysql-secure-passwords-and-claude-code-skill).
+A few more additions to [burrow](https://github.com/iajaydandge/burrow) since the [last post](https://ajaydandge.dev/blog/burrow-adds-mysql-secure-passwords-and-claude-code-skill).
 
 ## Read-only guard
 
@@ -80,4 +80,4 @@ The outdated-skill warning at startup checks all known install locations, so if 
 
 ---
 
-The source is at [github.com/nobleknightt/burrow](https://github.com/nobleknightt/burrow).
+The source is at [github.com/iajaydandge/burrow](https://github.com/iajaydandge/burrow).

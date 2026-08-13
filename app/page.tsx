@@ -5,11 +5,24 @@ import { baseUrl } from "@/sitemap";
 export async function generateMetadata() {
   await generateOgImage("Ajay Dandge", "home");
   return {
+    alternates: {
+      canonical: "/",
+    },
     openGraph: {
+      title: "Ajay Dandge — Software Developer",
+      description:
+        "Developer blog covering software engineering, CLI tools, databases, authentication, and LLMs. Written by Ajay Dandge.",
+      url: baseUrl,
+      siteName: "Ajay Dandge",
+      locale: "en_US",
+      type: "website",
       images: [{ url: `${baseUrl}/og/home.png` }],
     },
     twitter: {
       card: "summary_large_image",
+      title: "Ajay Dandge — Software Developer",
+      description:
+        "Developer blog covering software engineering, CLI tools, databases, authentication, and LLMs. Written by Ajay Dandge.",
       images: [`${baseUrl}/og/home.png`],
     },
   };
@@ -27,7 +40,10 @@ export default function Page() {
             "@type": "Person",
             name: "Ajay Dandge",
             url: baseUrl,
-            sameAs: ["https://github.com/nobleknightt"],
+            jobTitle: "Software Developer",
+            description:
+              "Software developer building web apps, CLI tools, database utilities, and writing technical articles.",
+            sameAs: ["https://github.com/iajaydandge"],
           }),
         }}
       />
@@ -61,7 +77,7 @@ export default function Page() {
         </a>
         {`, an online code runner to quickly write, run, and test code, `}
         <a
-          href="http://burrow.ajaydandge.dev/"
+          href="https://burrow.ajaydandge.dev/"
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-4"
@@ -70,7 +86,7 @@ export default function Page() {
         </a>
         {`, a CLI to query PostgreSQL and MySQL databases directly or through an SSH tunnel, and `}
         <a
-          href="https://github.com/nobleknightt/claude-usage-plugin"
+          href="https://github.com/iajaydandge/claude-usage-plugin"
           target="_blank"
           rel="noopener noreferrer"
           className="underline underline-offset-4"

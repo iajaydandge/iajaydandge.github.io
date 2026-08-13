@@ -1,9 +1,22 @@
 import { BlogPosts } from "@/components/posts";
+import { baseUrl } from "@/sitemap";
 
 export const metadata = {
   title: "Blog",
   description:
     "Technical posts on software engineering, databases, CLI tooling, authentication, and AI. Practical writing from real engineering problems.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    title: "Blog — Ajay Dandge",
+    description:
+      "Technical posts on software engineering, databases, CLI tooling, authentication, and AI. Practical writing from real engineering problems.",
+    url: `${baseUrl}/blog`,
+    siteName: "Ajay Dandge",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function Page() {

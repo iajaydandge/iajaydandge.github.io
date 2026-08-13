@@ -4,7 +4,7 @@ publishedAt: "2026-06-01"
 summary: "Burrow now supports MySQL alongside PostgreSQL, stores passwords securely outside config.toml, and ships a proper installer for the Claude Code skill."
 ---
 
-A few updates to [burrow](https://github.com/nobleknightt/burrow) since the [last post](https://ajaydandge.dev/blog/burrow-now-supports-direct-connections). This one is more substantial.
+A few updates to [burrow](https://github.com/iajaydandge/burrow) since the [last post](https://ajaydandge.dev/blog/burrow-now-supports-direct-connections). This one is more substantial.
 
 ## MySQL support
 
@@ -50,4 +50,4 @@ The interactive REPL held an open tunnel and connection for the duration of the 
 
 ---
 
-The source is at [github.com/nobleknightt/burrow](https://github.com/nobleknightt/burrow).
+The source is at [github.com/iajaydandge/burrow](https://github.com/iajaydandge/burrow).

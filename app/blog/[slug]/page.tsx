@@ -37,12 +37,16 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
     openGraph: {
       title,
       description,
       type: "article",
       publishedTime,
       url: `${baseUrl}/blog/${post.slug}`,
+      siteName: "Ajay Dandge",
       images: [
         {
           url: ogImage,
@@ -82,11 +86,12 @@ export default async function Blog({ params }) {
             description: post.metadata.summary,
             image: post.metadata.image
               ? `${baseUrl}${post.metadata.image}`
-              : `/og?title=${encodeURIComponent(post.metadata.title)}`,
+              : `${baseUrl}/og/${post.slug}.png`,
             url: `${baseUrl}/blog/${post.slug}`,
             author: {
               "@type": "Person",
               name: "Ajay Dandge",
+              url: baseUrl,
             },
           }),
         }}

@@ -72,7 +72,7 @@ The plugin installs from a Claude Code marketplace — which is just a `marketpl
 The clean path is the command line:
 
 ```bash
-claude plugin marketplace add nobleknightt/claude-usage-plugin
+claude plugin marketplace add iajaydandge/claude-usage-plugin
 claude plugin install claude-usage@claude-usage \
   --config API_KEY=<your-key> --config BASE_URL=<your-server-url>
 ```
@@ -89,4 +89,4 @@ One small thing that's easy to forget: the cost estimate is only as current as y
 
 None of this changed what the tool *is*. It still observes, still never blocks Claude Code, still trusts the API key over the payload. What changed is everything around the edges that turns a thing that runs on your laptop into a thing your team can log into. As usual, the edges were most of the work.
 
-The full source is on GitHub: [nobleknightt/claude-usage-plugin](https://github.com/nobleknightt/claude-usage-plugin). Issues, ideas, and pull requests are all welcome — if you run it on a setup I haven't tried, I'd love to hear how it goes.
+The full source is on GitHub: [iajaydandge/claude-usage-plugin](https://github.com/iajaydandge/claude-usage-plugin). Issues, ideas, and pull requests are all welcome — if you run it on a setup I haven't tried, I'd love to hear how it goes.
