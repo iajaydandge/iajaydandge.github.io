@@ -1,5 +1,5 @@
 ---
-title: "Local LLM Inference Benchmark — GPU vs CPU-only"
+title: "Benchmarking Local LLMs: Where VRAM Limits, MoE, and PLE Architecture Collide"
 publishedAt: "2026-08-08"
 summary: "Benchmarking Google Gemma 4 (MoE, dense, PLE) and Mistral Small 3.2 on an NVIDIA GeForce RTX 4060 Ti (16GB VRAM, Intel Core i7-12700F, 32GB RAM) vs an Intel Core i5-13420H (16GB RAM, no discrete GPU) across VRAM offloading, prompt eval, and token generation."
 ---
