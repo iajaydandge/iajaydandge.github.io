@@ -19,7 +19,7 @@ Personal website and engineering blog of Ajay Dandge.
 
 ## Architecture & Structure
 
-- `app/` — Next.js App Router pages and layouts (`/`, `/blog`, `/bookmarks`)
+- `app/` — Next.js App Router pages, layouts, and static markdown routes (`/`, `/blog`, `/bookmarks`, `index.md`, `blog.md`, `bookmarks.md`, `llms.txt`)
 - `app/blog/posts/` — MDX blog posts with frontmatter (`title`, `publishedAt`, `summary`)
 - `app/bookmarks/` — Curated bookmarks list (`app/bookmarks/data.ts` with `title` and `url`)
 - `app/components/` — Shared UI components (nav, footer, pet widget, MDX renderer)
@@ -31,3 +31,4 @@ Personal website and engineering blog of Ajay Dandge.
 3. **Route Sync Checklist**: When adding or removing top-level routes, always update:
    - Navigation in `app/components/nav.tsx`
    - Route list in `app/sitemap.ts`
+4. **Markdown Route Pairing**: Every public route must have a 1:1 plain Markdown representation (`.md`) for LLMs and `curl` access (`/index.md`, `/blog.md`, `/bookmarks.md`, and `/blog/[slug].md`). Keep `llms.txt` and `llms-full.txt` lean by referencing these individual `.md` routes without inflating payload size.
