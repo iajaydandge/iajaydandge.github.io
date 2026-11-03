@@ -1,18 +1,40 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+:root {
+  --background: #faf9f5;
+  --foreground: #161616;
+}
+
+.dark {
+  --background: #18181a;
+  --foreground: #ededed;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #18181a;
+    --foreground: #ededed;
+    color-scheme: dark;
+  }
+}
+
 ::selection {
   background-color: #47a3f3;
   color: #fefefe;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 html {
   min-width: 360px;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 .prose .anchor {
@@ -109,6 +131,7 @@ html {
   scrollbar-color: rgba(160, 160, 160, 0.35) transparent;
 }
 
+.dark *,
 @media (prefers-color-scheme: dark) {
   * {
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
@@ -132,6 +155,14 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.35);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
 @media (prefers-color-scheme: dark) {
