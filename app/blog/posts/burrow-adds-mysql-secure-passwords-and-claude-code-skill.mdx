@@ -48,6 +48,5 @@ It also stays in sync with your installed version. If you upgrade burrow without
 
 The interactive REPL held an open tunnel and connection for the duration of the session. It seemed useful in theory, but one-shot queries cover the same use case and are easier to reason about. Removing it simplifies both the codebase and the mental model of what burrow does.
 
----
 
 The source is at [github.com/iajaydandge/burrow](https://github.com/iajaydandge/burrow).

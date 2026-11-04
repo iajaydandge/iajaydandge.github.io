@@ -9,7 +9,7 @@
         "@tailwindcss/postcss": "^4.1.5",
         "@types/node": "^22.15.3",
         "@types/react": "^19.1.2",
-        "geist": "^1.4.1",
+        "geist": "^1.9.1",
         "highlight.js": "^11.11.1",
         "lucide-react": "^1.66.0",
         "next": "15.3.1",
@@ -329,7 +329,7 @@
 
     "fflate": ["fflate@0.7.4", "", {}, "sha512-5u2V/CDW15QM1XbbgS+0DfPxVB+jUKhWEKuuFuHncbk3tEEqzmoXL+2KyOFuKGqOnmdIy0/davWF1CkuwtibCw=="],
 
-    "geist": ["geist@1.4.1", "", { "peerDependencies": { "next": ">=13.2.0" } }, "sha512-uyVD2rGwXoGNqr+SfXzz3eL2h6zDG72d6vPbfm6u2BEfk8WT23BC1lxSwAV/FIFezPkTutAw00MQ0at5W+5olA=="],
+    "geist": ["geist@1.9.1", "", { "peerDependencies": { "next": ">=13.2.0" } }, "sha512-mkbyVjMJoNf6xz76NLeKAFwKE19BweHfFefA++wd+M9qiCX2Zncq3M96bdDwOsy4wurDQ594AKwtx+HILX+WBg=="],
 
     "get-stream": ["get-stream@6.0.1", "", {}, "sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg=="],
 

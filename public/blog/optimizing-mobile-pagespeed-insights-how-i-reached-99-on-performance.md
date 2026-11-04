@@ -8,7 +8,6 @@ When testing this blog on [Google PageSpeed Insights](https://pagespeed.web.dev/
 
 While 85 isn't terrible, a static Next.js site shouldn't be lagging on mobile CPU emulation. Here is how I diagnosed what was blocking the main thread and optimized it to **99/100**.
 
----
 
 ## 1. Finding the Bottlenecks
 
@@ -33,7 +32,6 @@ bunx --bun lighthouse https://ajaydandge.dev \
 
 Running Lighthouse CLI in headless mode produces an exact JSON trace containing detailed metric scores, long main-thread task timelines, and specific resource savings that can be inspected directly from the terminal.
 
----
 
 ## 2. The Fixes
 
@@ -90,7 +88,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 `strategy="lazyOnload"` schedules script execution during browser idle time (`requestIdleCallback`) *after* the page is fully interactive.
 
----
 
 ### Code-Splitting Interactive Client Components
 
@@ -154,7 +151,6 @@ export function Pet() {
 
 Now, only the chosen pet chunk is loaded on mount, keeping unused pet code out of the initial bundle.
 
----
 
 ### Upgrading Target to ES2022
 
@@ -170,7 +166,6 @@ I updated `tsconfig.json` to target `ES2022`:
 
 This prevents the bundler from polyfilling native modern array and object methods.
 
----
 
 ## 3. Results
 

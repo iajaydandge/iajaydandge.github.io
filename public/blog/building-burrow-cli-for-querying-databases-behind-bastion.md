@@ -61,7 +61,7 @@ ssh_host     = "bastion-staging.example.com"
 
 Priority is: env vars beat the config file, which beats built-in defaults. The config module walks those three sources in order and exits with a helpful message if a required field is missing:
 
-```
+```bash
 error: missing required config for profile 'staging':
   db_host  (env: BURROW_DB_HOST)
 
@@ -129,6 +129,5 @@ uv tool install git+https://github.com/iajaydandge/burrow.git
 
 There is a hidden command that does not appear in `--help`. If you find it, it prints a poem about what burrow does and why it is named that way. I will not say what the command is.
 
----
 
 Burrow is small and does one thing. The source is at [github.com/iajaydandge/burrow](https://github.com/iajaydandge/burrow) — install instructions, config reference, and usage examples are all in the README.

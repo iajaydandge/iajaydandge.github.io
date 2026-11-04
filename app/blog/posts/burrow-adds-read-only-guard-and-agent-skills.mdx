@@ -78,6 +78,5 @@ Supported agent names: `agents`, `claude-code`, `codex`, `copilot`, `cursor`, `o
 
 The outdated-skill warning at startup checks all known install locations, so if you have the skill installed for multiple agents, any one of them being stale will prompt you to update.
 
----
 
 The source is at [github.com/iajaydandge/burrow](https://github.com/iajaydandge/burrow).

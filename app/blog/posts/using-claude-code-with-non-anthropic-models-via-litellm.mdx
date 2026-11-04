@@ -70,7 +70,6 @@ export ANTHROPIC_MODEL=gpt-oss-120b
 code <directory>
 ```
 
----
 
 References:
 - [LiteLLM — non-Anthropic models with Claude Code](https://docs.litellm.ai/docs/tutorials/claude_non_anthropic_models)

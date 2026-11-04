@@ -12,7 +12,6 @@ The test suite covers two distinct hardware environments:
 
 The two setups sit side by side as reference points for different bottleneck classes (high-bandwidth VRAM vs. system RAM bandwidth, and dense vs. sparse/PLE architectures).
 
----
 
 ## Benchmark Results
 
@@ -35,7 +34,6 @@ Tested on battery-efficient mobile silicon with integrated graphics, running ful
 | `gemma4:e4b` | 100% CPU | 26 ± 4 tok/s | 10 ± 4 tok/s | 2s ± 0.5s |
 | `gemma4:e2b` | 100% CPU | 72 ± 5 tok/s | 21 ± 5 tok/s | 2s ± 0.5s |
 
----
 
 ## Model Specifications (`ollama show`)
 
@@ -55,7 +53,6 @@ Here is the structural breakdown of each model retrieved via `ollama show`:
 | **Thinking** | Yes | Yes | Yes | Yes | No |
 | **Default Temperature** | 1.0 | 1.0 | 1.0 | 1.0 | 0.15 |
 
----
 
 ## Key Findings & Architecture Insights
 
@@ -90,7 +87,6 @@ Checking `ollama ps` revealed the culprit:
 - On the 16GB NVIDIA GeForce RTX 4060 Ti, Ollama was forced to place **63% on CPU RAM and only 37% on GPU**.
 - Because every token generation step must sweep all 24B dense parameters across the slow system RAM bus, generation throughput ground to a halt. In contrast, its prompt eval remained high (571 ± 240 tok/s) because batch matrix multiplication is compute-bound and saturates parallel execution units.
 
----
 
 ## Actionable Recommendations
 
@@ -118,7 +114,6 @@ Ollama introduced native Gemma 4 MTP support in [v0.23.1](https://github.com/oll
 ### 4. Switch to Quantization-Aware Training (QAT) Checkpoints
 For memory-constrained setups, standard post-training quantization (PTQ) can degrade output quality at low bitrates. DeepMind's official QAT checkpoints retain higher fidelity per byte, making 3-bit or 4-bit runs much more capable on limited RAM.
 
----
 
 ## References & Further Reading
 

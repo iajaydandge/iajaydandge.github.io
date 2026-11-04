@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { CustomMDX } from "@/components/mdx";
 import { formatDate, getBlogPosts } from "@/blog/utils";
 import { baseUrl } from "@/sitemap";
@@ -99,17 +100,24 @@ export default async function Blog({ params }) {
       <h1 className="font-semibold text-2xl tracking-tighter">
         {post.metadata.title}
       </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
-        </p>
+      <div className="flex items-center justify-between mt-2 mb-8 text-xs text-neutral-500 dark:text-neutral-400">
+        <div className="flex items-center gap-2">
+          <span>{formatDate(post.metadata.publishedAt)}</span>
+          {post.metadata.readingTime && (
+            <>
+              <span>·</span>
+              <span>{post.metadata.readingTime}</span>
+            </>
+          )}
+        </div>
         <a
           href={`/blog/${post.slug}.md`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-neutral-600 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-all px-2 py-1 rounded"
+          className="group hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100 inline-flex items-center"
         >
-          View as Markdown
+          <span>.md</span>
+          <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
         </a>
       </div>
       <article className="prose">

@@ -1,9 +1,11 @@
 import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import type { Metadata } from "next";
-import Footer from "@/components/footer";
-import { Navbar } from "@/components/nav";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { Pet } from "@/components/pet";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 import "@/global.css";
 import { baseUrl } from "@/sitemap";
 import Script from "next/script";
@@ -44,7 +46,76 @@ export const metadata: Metadata = {
   },
 };
 
-const cx = (...classes) => classes.filter(Boolean).join(" ");
+const navItems = {
+  "/": {
+    name: "home",
+  },
+  "/writing": {
+    name: "writing",
+  },
+  "/library": {
+    name: "library",
+  },
+  "/bookmarks": {
+    name: "bookmarks",
+  },
+  // "/sketchbook": {
+  //   name: "sketchbook",
+  // },
+  "/about": {
+    name: "about",
+  },
+};
+
+function Navbar() {
+  return (
+    <aside className="-ml-[8px] mb-16 tracking-tight">
+      <div className="lg:sticky lg:top-20">
+        <nav
+          className="flex flex-row items-center justify-between relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
+          id="nav"
+        >
+          <div className="flex flex-row space-x-0 pr-6 overflow-x-auto">
+            {Object.entries(navItems).map(([path, { name }]) => {
+              return (
+                <Link
+                  key={path}
+                  href={path}
+                  className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1 text-sm font-medium"
+                >
+                  {name}
+                </Link>
+              );
+            })}
+          </div>
+          <ThemeToggle />
+        </nav>
+      </div>
+    </aside>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="mt-16 mb-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+      <p>© {new Date().getFullYear()} MIT Licensed</p>
+      <div className="flex items-center gap-4">
+        <a
+          href="/rss"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
+        >
+          <span>rss</span>
+          <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
+        </a>
+      </div>
+    </footer>
+  );
+}
+
+const cx = (...classes: (string | boolean | undefined)[]) =>
+  classes.filter(Boolean).join(" ");
 
 export default function RootLayout({
   children,
@@ -57,6 +128,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cx(
         "bg-background text-foreground",
+        GeistSans.variable,
+        GeistMono.variable,
         GeistSans.className
       )}
     >

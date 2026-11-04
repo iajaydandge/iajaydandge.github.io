@@ -21,6 +21,5 @@ When `use_ssh` is false, burrow skips the SSH transport and connects to PostgreS
 
 `use_ssh` defaults to `true`, so existing configs continue to work without any changes. The `config set` wizard also picks this up: it asks about SSH mode first and only prompts for bastion details when needed.
 
----
 
 The source is at [github.com/iajaydandge/burrow](https://github.com/iajaydandge/burrow).
