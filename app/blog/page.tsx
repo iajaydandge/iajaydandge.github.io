@@ -1,29 +1,5 @@
-import { BlogPosts } from "@/components/posts";
-import { baseUrl } from "@/sitemap";
+import { redirect } from "next/navigation";
 
-export const metadata = {
-  title: "Blog",
-  description:
-    "Technical posts on software engineering, databases, CLI tooling, authentication, and AI. Practical writing from real engineering problems.",
-  alternates: {
-    canonical: "/blog",
-  },
-  openGraph: {
-    title: "Blog — Ajay Dandge",
-    description:
-      "Technical posts on software engineering, databases, CLI tooling, authentication, and AI. Practical writing from real engineering problems.",
-    url: `${baseUrl}/blog`,
-    siteName: "Ajay Dandge",
-    locale: "en_US",
-    type: "website",
-  },
-};
-
-export default function Page() {
-  return (
-    <section>
-      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">My Blog</h1>
-      <BlogPosts />
-    </section>
-  );
+export default function BlogPage() {
+  redirect("/writing");
 }

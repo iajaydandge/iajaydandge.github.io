@@ -16,20 +16,17 @@ interface PostItem {
 }
 
 const filters = [
-  { label: "All", value: "all" },
   { label: "Articles", value: "article" },
   { label: "Notes", value: "note" },
   { label: "Thoughts", value: "thought" },
-  { label: "Drafts", value: "draft" },
 ];
 
 export function WritingList({ posts }: { posts: PostItem[] }) {
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState("article");
 
-  const filteredPosts = posts.filter((post) => {
-    if (activeFilter === "all") return true;
-    return (post.metadata.type || "article") === activeFilter;
-  });
+  const filteredPosts = posts.filter(
+    (post) => (post.metadata.type || "article") === activeFilter
+  );
 
   return (
     <div>
@@ -58,7 +55,7 @@ export function WritingList({ posts }: { posts: PostItem[] }) {
       {/* Post List */}
       {filteredPosts.length === 0 ? (
         <p className="text-sm text-neutral-500 dark:text-neutral-400 py-4">
-          No entries found in this category.
+          Nothing here right now — still brewing or in drafts.
         </p>
       ) : (
         <ul className="divide-y divide-neutral-100 dark:divide-neutral-900">

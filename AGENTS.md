@@ -19,9 +19,9 @@ Personal website and engineering blog of Ajay Dandge.
 
 ## Architecture & Structure
 
-- `app/` — Next.js App Router pages, layouts, and static markdown routes (`/`, `/blog`, `/bookmarks`, `index.md`, `blog.md`, `bookmarks.md`, `llms.txt`)
+- `app/` — Next.js App Router pages, layouts, and static markdown routes (`/`, `/writing`, `/library`, `/about`, `index.md`, `writing.md`, `library.md`, `about.md`, `llms.txt`)
 - `app/blog/posts/` — MDX blog posts with frontmatter (`title`, `publishedAt`, `summary`)
-- `app/bookmarks/` — Curated bookmarks list (`app/bookmarks/data.ts` with `title` and `url`)
+- `app/library/` — Things I watch, read, listen to, and bookmarks (`app/library/data.ts`)
 - `app/components/` — Shared UI components (pet widget, MDX renderer, greeting, theme toggle)
 
 ## Key Invariants
@@ -35,5 +35,5 @@ Personal website and engineering blog of Ajay Dandge.
 3. **Route Sync Checklist**: When adding or removing top-level routes, always update:
    - Navigation in `app/layout.tsx`
    - Route list in `app/sitemap.ts`
-4. **Markdown Route Pairing**: Every public route must have a 1:1 plain Markdown representation (`.md`) for LLMs and `curl` access (`/index.md`, `/blog.md`, `/bookmarks.md`, and `/blog/[slug].md`). Keep `llms.txt` and `llms-full.txt` lean by referencing these individual `.md` routes without inflating payload size.
+4. **Markdown Route Pairing**: Every public route must have a 1:1 plain Markdown representation (`.md`) for LLMs and `curl` access (`/index.md`, `/writing.md`, `/library.md`, `/about.md`, and `/blog/[slug].md`). Keep `llms.txt` and `llms-full.txt` lean by referencing these individual `.md` routes without inflating payload size.
 5. **Path Aliases**: Always use `@/` path aliases (e.g., `@/library/data`, `@/components/...`) for internal imports instead of relative paths (`./`, `../`).

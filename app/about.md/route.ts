@@ -8,7 +8,7 @@ export async function GET() {
     ``,
     `I'm Ajay. I build software, explore ideas, and currently work as an AI Engineer at [Fractal](https://fractal.ai/).`,
     ``,
-    `Outside of coding, I spend my time playing badminton, watching anime, reading fiction (mostly), and sketching. I also enthusiastically follow cricket and love following sports in general.`,
+    `Outside of work, I spend my time playing badminton, watching anime, reading fiction (mostly), and sketching. I also enthusiastically follow cricket and love following sports in general.`,
     ``,
     `## Things I've Made`,
     ``,
@@ -33,6 +33,12 @@ export async function GET() {
     `- X: https://x.com/iajaydandge`,
     `- LinkedIn: https://linkedin.com/in/ajaydandge`,
     `- Email: contact@ajaydandge.dev`,
+    ``,
+    `## Navigation`,
+    `- [Home](${baseUrl}/index.md)`,
+    `- [Writing](${baseUrl}/writing.md)`,
+    `- [Library](${baseUrl}/library.md)`,
+    `- [About](${baseUrl}/about.md)`,
   ].join("\n");
 
   return new Response(content, {

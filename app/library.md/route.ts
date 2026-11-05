@@ -1,4 +1,5 @@
 import { anime, books, songs, bookmarks } from "@/library/data";
+import { baseUrl } from "@/sitemap";
 
 export const dynamic = "force-static";
 
@@ -6,7 +7,7 @@ export async function GET() {
   const lines = [
     `# Library`,
     ``,
-    `Things I watch, read, and listen to.`,
+    `Things I watch, read, and listen to — anime, books, music, and bookmarks.`,
     ``,
     `## Anime`,
     ``,
@@ -34,6 +35,12 @@ export async function GET() {
     ...bookmarks.map(
       (item, index) => `${index + 1}. [${item.title}](${item.url})`
     ),
+    ``,
+    `## Navigation`,
+    `- [Home](${baseUrl}/index.md)`,
+    `- [Writing](${baseUrl}/writing.md)`,
+    `- [Library](${baseUrl}/library.md)`,
+    `- [About](${baseUrl}/about.md)`,
   ].join("\n");
 
   return new Response(lines, {
