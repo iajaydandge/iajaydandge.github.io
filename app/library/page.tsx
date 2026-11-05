@@ -3,7 +3,7 @@ import { LibraryView } from "@/library/library-view";
 export const metadata = {
   title: "Library",
   description:
-    "A collection of anime, books, and music.",
+    "Things I watch, read, and listen to — anime, books, music, and bookmarks.",
 };
 
 export default function LibraryPage() {

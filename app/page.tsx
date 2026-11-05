@@ -12,9 +12,9 @@ export async function generateMetadata() {
       canonical: "/",
     },
     openGraph: {
-      title: "Ajay Dandge — Software Developer",
+      title: "Ajay Dandge",
       description:
-        "Developer blog covering software engineering, CLI tools, databases, authentication, and LLMs. Written by Ajay Dandge.",
+        "Personal corner of the internet. Building software, exploring ideas, writing, and keeping what's interesting.",
       url: baseUrl,
       siteName: "Ajay Dandge",
       locale: "en_US",
@@ -23,9 +23,9 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Ajay Dandge — Software Developer",
+      title: "Ajay Dandge",
       description:
-        "Developer blog covering software engineering, CLI tools, databases, authentication, and LLMs. Written by Ajay Dandge.",
+        "Personal corner of the internet. Building software, exploring ideas, writing, and keeping what's interesting.",
       images: [`${baseUrl}/og/home.png`],
     },
   };
@@ -51,9 +51,9 @@ export default function Page() {
             "@type": "Person",
             name: "Ajay Dandge",
             url: baseUrl,
-            jobTitle: "Software Developer",
+            jobTitle: "Software Engineer",
             description:
-              "Personal space of Ajay Dandge. Software developer building web apps, CLI tools, and exploring ideas.",
+              "Personal corner of Ajay Dandge. Software engineer building web apps, CLI tools, and exploring ideas.",
             sameAs: [
               "https://github.com/iajaydandge",
               "https://x.com/iajaydandge",

@@ -13,15 +13,15 @@ import Script from "next/script";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Ajay Dandge — Software Developer",
+    default: "Ajay Dandge",
     template: "%s — Ajay Dandge",
   },
   description:
-    "Developer blog covering software engineering, CLI tools, databases, authentication, and LLMs. Written by Ajay Dandge.",
+    "Personal corner of the internet. Building software, exploring ideas, writing, and keeping what's interesting.",
   openGraph: {
-    title: "Ajay Dandge — Software Developer",
+    title: "Ajay Dandge",
     description:
-      "Developer blog covering software engineering, CLI tools, databases, authentication, and LLMs. Written by Ajay Dandge.",
+      "Personal corner of the internet. Building software, exploring ideas, writing, and keeping what's interesting.",
     url: baseUrl,
     siteName: "Ajay Dandge",
     locale: "en_US",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Ajay Dandge — Software Developer",
+    title: "Ajay Dandge",
     description:
-      "Developer blog covering software engineering, CLI tools, databases, authentication, and LLMs. Written by Ajay Dandge.",
+      "Personal corner of the internet. Building software, exploring ideas, writing, and keeping what's interesting.",
   },
   robots: {
     index: true,
