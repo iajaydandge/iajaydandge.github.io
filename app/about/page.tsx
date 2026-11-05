@@ -27,9 +27,9 @@ export default function AboutPage() {
           .
         </p>
         <p>
-          Outside of work, I spend my time watching anime, reading fiction
-          (mostly), diving into history and geography rabbit holes across the
-          web, and sketching random things.
+          Outside of work, I spend my time playing badminton, watching anime,
+          reading fiction (mostly), and sketching. I also enthusiastically follow
+          cricket and love following sports in general.
         </p>
       </div>
 
@@ -204,6 +204,21 @@ export default function AboutPage() {
               <span className="text-neutral-500 dark:text-neutral-400">
                 {" "}
                 — Number guessing game written in different programming languages
+              </span>
+            </li>
+            <li>
+              <a
+                href="https://slots.ajaydandge.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center hover:underline underline-offset-4 text-neutral-900 dark:text-neutral-100"
+              >
+                <span>Slots</span>
+                <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
+              </a>
+              <span className="text-neutral-500 dark:text-neutral-400">
+                {" "}
+                — Checks available court slots where we go to play badminton
               </span>
             </li>
             <li>

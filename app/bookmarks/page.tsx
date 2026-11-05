@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import { bookmarks } from "./data";
+import { bookmarks } from "@/bookmarks/data";
 
 export const metadata = {
   title: "Bookmarks",

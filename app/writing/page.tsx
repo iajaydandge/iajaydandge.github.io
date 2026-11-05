@@ -1,5 +1,5 @@
 import { getBlogPosts } from "@/blog/utils";
-import { WritingList } from "./writing-list";
+import { WritingList } from "@/writing/writing-list";
 
 export const metadata = {
   title: "Writing",

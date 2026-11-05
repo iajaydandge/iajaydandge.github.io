@@ -1,4 +1,4 @@
-import { anime, books, songs } from "@/library/data";
+import { anime, books, songs, bookmarks } from "@/library/data";
 
 export const dynamic = "force-static";
 
@@ -27,6 +27,12 @@ export async function GET() {
     ``,
     ...songs.map(
       (song, index) => `${index + 1}. [${song.title}](${song.url}) — ${song.detail}`
+    ),
+    ``,
+    `## Bookmarks`,
+    ``,
+    ...bookmarks.map(
+      (item, index) => `${index + 1}. [${item.title}](${item.url})`
     ),
   ].join("\n");
 

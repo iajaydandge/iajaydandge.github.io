@@ -56,9 +56,6 @@ const navItems = {
   "/library": {
     name: "library",
   },
-  "/bookmarks": {
-    name: "bookmarks",
-  },
   // "/sketchbook": {
   //   name: "sketchbook",
   // },
@@ -69,19 +66,19 @@ const navItems = {
 
 function Navbar() {
   return (
-    <aside className="-ml-[8px] mb-16 tracking-tight">
+    <aside className="mb-16 tracking-tight">
       <div className="lg:sticky lg:top-20">
         <nav
-          className="flex flex-row items-center justify-between relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
+          className="flex items-center justify-between relative px-0 pb-0"
           id="nav"
         >
-          <div className="flex flex-row space-x-0 pr-6 overflow-x-auto">
+          <div className="flex items-center gap-1 sm:gap-2 -ml-2">
             {Object.entries(navItems).map(([path, { name }]) => {
               return (
                 <Link
                   key={path}
                   href={path}
-                  className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1 text-sm font-medium"
+                  className="transition-colors hover:text-neutral-800 dark:hover:text-neutral-200 py-1 px-2 text-sm font-medium"
                 >
                   {name}
                 </Link>
@@ -97,7 +94,7 @@ function Navbar() {
 
 function Footer() {
   return (
-    <footer className="mt-16 mb-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+    <footer className="mt-16 mb-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
       <p>© {new Date().getFullYear()} MIT Licensed</p>
       <div className="flex items-center gap-4">
         <a
@@ -133,7 +130,7 @@ export default function RootLayout({
         GeistSans.className
       )}
     >
-      <body className="antialiased max-w-xl mx-4 mt-8 lg:mx-auto">
+      <body className="antialiased max-w-xl mx-4 sm:mx-auto mt-8">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -2,19 +2,26 @@
 
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { anime, books, songs } from "./data";
+import { anime, books, songs, bookmarks } from "@/library/data";
 
 const tabs = [
   { label: "Anime", value: "anime" },
   { label: "Books", value: "books" },
   { label: "Music", value: "music" },
+  { label: "Bookmarks", value: "bookmarks" },
 ];
 
 export function LibraryView() {
   const [activeTab, setActiveTab] = useState("anime");
 
   const currentList =
-    activeTab === "anime" ? anime : activeTab === "books" ? books : songs;
+    activeTab === "anime"
+      ? anime
+      : activeTab === "books"
+      ? books
+      : activeTab === "music"
+      ? songs
+      : bookmarks;
 
   return (
     <div>

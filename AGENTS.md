@@ -36,3 +36,4 @@ Personal website and engineering blog of Ajay Dandge.
    - Navigation in `app/layout.tsx`
    - Route list in `app/sitemap.ts`
 4. **Markdown Route Pairing**: Every public route must have a 1:1 plain Markdown representation (`.md`) for LLMs and `curl` access (`/index.md`, `/blog.md`, `/bookmarks.md`, and `/blog/[slug].md`). Keep `llms.txt` and `llms-full.txt` lean by referencing these individual `.md` routes without inflating payload size.
+5. **Path Aliases**: Always use `@/` path aliases (e.g., `@/library/data`, `@/components/...`) for internal imports instead of relative paths (`./`, `../`).
