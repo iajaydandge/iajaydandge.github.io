@@ -14,17 +14,7 @@ export default function AboutPage() {
       <div className="space-y-4 text-neutral-800 dark:text-neutral-200">
         <p>
           I&apos;m Ajay. I build software, explore ideas, and currently work as
-          an AI Engineer at{" "}
-          <a
-            href="https://fractal.ai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center font-medium text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4"
-          >
-            <span>Fractal</span>
-            <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
-          </a>
-          .
+          an AI Engineer.
         </p>
         <p>
           Outside of work, I spend my time playing badminton, watching anime,

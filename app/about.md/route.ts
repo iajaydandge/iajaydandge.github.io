@@ -6,7 +6,7 @@ export async function GET() {
   const content = [
     `# About — Ajay Dandge`,
     ``,
-    `I'm Ajay. I build software, explore ideas, and currently work as an AI Engineer at [Fractal](https://fractal.ai/).`,
+    `I'm Ajay. I build software, explore ideas, and currently work as an AI Engineer.`,
     ``,
     `Outside of work, I spend my time playing badminton, watching anime, reading fiction (mostly), and sketching. I also enthusiastically follow cricket and love following sports in general.`,
     ``,
