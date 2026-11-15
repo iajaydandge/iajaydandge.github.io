@@ -1,0 +1,50 @@
+---
+title: "Precision and Recall"
+publishedAt: "2026-11-15"
+summary: "A practical mental model for keeping precision and recall straight using a simple spam detection example."
+type: "note"
+---
+
+Imagine running a spam filter on a batch of 100 incoming emails. In reality, 40 of them are actual spam (positive) and 60 are legitimate emails (negative).
+
+When we evaluate the filter's predictions against the actual labels, we get:
+
+| | Predicted Positive | Predicted Negative | Total |
+| :--- | :--- | :--- | :--- |
+| **Actual Positive** | 30 (TP) | 10 (FN) | **40** |
+| **Actual Negative** | 5 (FP) | 55 (TN) | **60** |
+| **Total** | **35** | **65** | **100** |
+
+The confusion usually comes from mixing up which total you divide by. It helps to look at it from two different perspectives:
+
+## 1. Precision — The model perspective
+
+Look at the model's output: it flagged 35 emails as spam. But when we inspect those 35 predictions, only 30 were genuinely spam, while 5 were legitimate emails that got wrongly caught in the filter.
+
+```
+Precision = 30 / 35 = 0.857 = 85.7%
+```
+
+Out of everything the model claimed was positive, how many were actually right?
+
+## 2. Recall — The dataset perspective
+
+Now look at the dataset itself: there were 40 actual spam emails in total. The filter caught 30 of them and missed 10.
+
+```
+Recall = 30 / 40 = 0.75 = 75%
+```
+
+Out of everything that was actually positive in reality, how many did the model find?
+
+TPR (True Positive Rate) is exactly the same as Recall: `TPR = TP / (TP + FN) = 30 / 40 = 75%`, measuring the percentage of actual positives correctly detected.
+
+## The complete picture
+
+Putting both perspectives side by side:
+
+- **Precision** starts from what the model predicted: `30 / 35` (30 correct hits out of 35 predicted positives).
+- **Recall / TPR** starts from what actually existed: `30 / 40` (30 detected hits out of 40 actual positives).
+
+The key takeaway is that both metrics share the exact same numerator — the 30 true positives (TP). The only difference is the denominator: Precision cares about the model's total predictions (35), while Recall cares about the dataset's actual reality (40).
+

@@ -5,6 +5,7 @@ Personal website and engineering blog of Ajay Dandge.
 ## Tech Stack
 
 - **Runtime & Package Manager**: Bun (`bun run dev`, `bun run build`)
+- **Hosting**: GitHub Pages (`iajaydandge.github.io` / `ajaydandge.dev`) deployed from `out/`
 - **Framework**: Next.js 15 (App Router)
 - **Export Target**: Pure static export (`output: "export"`) into `out/`
 - **Styling**: Tailwind CSS v4 (`@tailwindcss/postcss`) with system dark/light mode
