@@ -33,15 +33,20 @@ export function Ousagi() {
 
     let frameCount = 0;
     let idleTime = 0;
-    let idleAnimation: 'scratchSelf' | 'sleeping' | null = null;
+    let idleAnimation: 'scratch' | 'sleeping' | null = null;
     let idleAnimationFrame = 0;
+    let isSleeping = false;
+    let isInitialCycle = true;
+    let sleepStartTime = 0;
+    let sleepDurationMs = 0;
+    let wakeUpFrames = 0;
 
     const rabbitSpeed = 10;
 
     const spriteSets: Record<string, [number, number][]> = {
       idle: [[-3, -3]],
       alert: [[-7, -3]],
-      scratchSelf: [
+      scratch: [
         [-5, 0],
         [-6, 0],
         [-7, 0],
@@ -120,6 +125,42 @@ export function Ousagi() {
 
     function frame() {
       frameCount++;
+
+      // Waking up animation (alert sprite for ~1.5s before resuming chase)
+      if (wakeUpFrames > 0) {
+        wakeUpFrames--;
+        setSprite('alert', 0);
+        rabbitEl.style.left = `${rabbitPosX - 16}px`;
+        rabbitEl.style.top = `${rabbitPosY - 16}px`;
+        return;
+      }
+
+      // If sleeping, stay asleep for 1-2 minutes undisturbed by cursor movement
+      if (isSleeping) {
+        idleAnimationFrame++;
+        const elapsedSleep = Date.now() - sleepStartTime;
+
+        if (elapsedSleep < 1500) {
+          setSprite('tired', 0);
+        } else {
+          setSprite('sleeping', Math.floor(idleAnimationFrame / 4));
+        }
+
+        // Auto wake up when sleep duration (1-2 minutes) has completed
+        if (elapsedSleep >= sleepDurationMs) {
+          isSleeping = false;
+          idleAnimation = null;
+          idleAnimationFrame = 0;
+          idleTime = 0;
+          wakeUpFrames = 10; // ~1.5s alert reaction
+          setSprite('alert', 0);
+        }
+
+        rabbitEl.style.left = `${rabbitPosX - 16}px`;
+        rabbitEl.style.top = `${rabbitPosY - 16}px`;
+        return;
+      }
+
       const diffX = rabbitPosX - mousePosX;
       const diffY = rabbitPosY - mousePosY;
       const distance = Math.sqrt(diffX * diffX + diffY * diffY);
@@ -140,7 +181,7 @@ export function Ousagi() {
         if (rabbitPosY <= minY) hitWall = 'N';
         if (rabbitPosY >= maxY) hitWall = 'S';
 
-        if (idleTime > 10) {
+        if (idleTime > 10 && idleAnimation === null) {
           if (hitWall) {
             setSprite(`scratchWall${hitWall}`, Math.floor(frameCount / 4));
           } else {
@@ -148,21 +189,35 @@ export function Ousagi() {
           }
         }
         
-        if (idleTime > 30 && idleAnimation === null) {
-          idleAnimation = Math.random() < 0.3 ? 'scratchSelf' : 'sleeping';
+        // 10s on initial load (67 frames), 5s on subsequent cycles (33 frames)
+        const idleThreshold = isInitialCycle ? 67 : 33;
+
+        if (idleTime > idleThreshold && idleAnimation === null) {
+          idleAnimation = Math.random() < 0.3 ? 'scratch' : 'sleeping';
+          idleAnimationFrame = 0;
+          if (idleAnimation === 'sleeping') {
+            isSleeping = true;
+            isInitialCycle = false; // Subsequent cycles use 5 seconds
+            sleepStartTime = Date.now();
+            // Sleep between 60s and 120s (1 to 2 minutes)
+            sleepDurationMs = (Math.floor(Math.random() * 60) + 60) * 1000;
+          }
         }
 
         if (idleAnimation) {
-          if (idleAnimation === 'sleeping') {
-            if (idleAnimationFrame < 10) {
-              setSprite('tired', 0);
-            } else {
-              setSprite('sleeping', Math.floor(idleAnimationFrame / 4));
+          if (idleAnimation === 'scratch') {
+            setSprite('scratch', Math.floor(idleAnimationFrame / 4));
+            idleAnimationFrame++;
+            // Naturally transition to sleep after scratching
+            if (idleAnimationFrame > 16) {
+              idleAnimation = 'sleeping';
+              idleAnimationFrame = 0;
+              isSleeping = true;
+              isInitialCycle = false;
+              sleepStartTime = Date.now();
+              sleepDurationMs = (Math.floor(Math.random() * 60) + 60) * 1000;
             }
-          } else {
-            setSprite(idleAnimation, Math.floor(idleAnimationFrame / 4));
           }
-          idleAnimationFrame++;
         } else if (idleTime <= 10) {
           setSprite('idle', 0);
         }

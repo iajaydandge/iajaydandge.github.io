@@ -23,6 +23,7 @@ Personal website and engineering blog of Ajay Dandge.
 - `app/blog/posts/` — MDX blog posts with frontmatter (`title`, `publishedAt`, `summary`)
 - `app/library/` — Things I watch, read, listen to, and bookmarks (`app/library/data.ts`)
 - `app/components/` — Shared UI components (pet widget, MDX renderer, greeting, theme toggle)
+- `app/components/pet/` — Retro cursor pets (`oneko`, `oinu`, `ousagi`)
 
 ## Key Invariants
 
@@ -37,3 +38,7 @@ Personal website and engineering blog of Ajay Dandge.
    - Route list in `app/sitemap.ts`
 4. **Markdown Route Pairing**: Every public route must have a 1:1 plain Markdown representation (`.md`) for LLMs and `curl` access (`/index.md`, `/writing.md`, `/library.md`, `/about.md`, and `/blog/[slug].md`). Keep `llms.txt` and `llms-full.txt` lean by referencing these individual `.md` routes without inflating payload size.
 5. **Path Aliases**: Always use `@/` path aliases (e.g., `@/library/data`, `@/components/...`) for internal imports instead of relative paths (`./`, `../`).
+6. **Pet Widget Invariants**:
+   - Consistent naming across code and components: `oneko`, `oinu`, and `ousagi`.
+   - Always transparent: Must strictly remain `pointerEvents: 'none'` at all times so that text selection, copying content, and clicking links are never blocked.
+   - Sleep & Wake Cycles: On initial load, the pet waits 10 seconds of stationary cursor before sleeping; on subsequent cycles, it waits 5 seconds. Once idle, it sleeps undisturbed for 1–2 minutes (ignoring cursor movements), then automatically wakes up and follows the cursor again.

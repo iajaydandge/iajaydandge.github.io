@@ -8,23 +8,23 @@ const Oinu = dynamic(() => import('./oinu').then((mod) => mod.Oinu), { ssr: fals
 const Ousagi = dynamic(() => import('./ousagi').then((mod) => mod.Ousagi), { ssr: false });
 
 export function Pet() {
-  const [activePet, setActivePet] = useState<'cat' | 'dog' | 'rabbit' | null>(null);
+  const [activePet, setActivePet] = useState<'oneko' | 'oinu' | 'ousagi' | null>(null);
 
   useEffect(() => {
-    // Randomly choose between cat (Oneko), dog (Oinu), and rabbit (Ousagi) on mount
+    // Randomly choose between oneko, oinu, and ousagi on mount
     const rand = Math.random();
     if (rand < 0.33) {
-      setActivePet('cat');
+      setActivePet('oneko');
     } else if (rand < 0.66) {
-      setActivePet('dog');
+      setActivePet('oinu');
     } else {
-      setActivePet('rabbit');
+      setActivePet('ousagi');
     }
   }, []);
 
-  if (activePet === 'cat') return <Oneko />;
-  if (activePet === 'dog') return <Oinu />;
-  if (activePet === 'rabbit') return <Ousagi />;
+  if (activePet === 'oneko') return <Oneko />;
+  if (activePet === 'oinu') return <Oinu />;
+  if (activePet === 'ousagi') return <Ousagi />;
   return null;
 }
 
