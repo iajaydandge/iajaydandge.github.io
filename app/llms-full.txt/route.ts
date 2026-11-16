@@ -63,23 +63,18 @@ export async function GET() {
     `Things I watch, read, and listen to.`,
     ``,
     `### Anime`,
-    ...anime.map(
-      (item, index) =>
-        `${index + 1}. [${item.title}](${item.url})${
-          item.detail ? ` (${item.detail})` : ""
-        }`
-    ),
+    ...anime.map((item, index) => `${index + 1}. [${item.title}](${item.url})`),
     ``,
     `### Books`,
     ...books.map(
       (item, index) =>
-        `${index + 1}. [${item.title}](${item.url}) — ${item.detail}`
+        `${index + 1}. [${item.title}](${item.url}) — ${item.author}`
     ),
     ``,
     `### Music`,
     ...songs.map(
       (song, index) =>
-        `${index + 1}. [${song.title}](${song.url}) — ${song.detail}`
+        `${index + 1}. [${song.title}](${song.url}) — ${song.artist}`
     ),
     ``,
     `### Bookmarks`,

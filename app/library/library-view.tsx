@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { anime, books, songs, bookmarks } from "@/library/data";
+import { anime, books, songs, bookmarks, type MediaItem } from "@/library/data";
 
 const tabs = [
   { label: "Anime", value: "anime" },
@@ -10,6 +10,13 @@ const tabs = [
   { label: "Music", value: "music" },
   { label: "Bookmarks", value: "bookmarks" },
 ];
+
+function getSubtitle(item: MediaItem): string | undefined {
+  if ("author" in item) return item.author;
+  if ("artist" in item) return item.artist;
+  if ("description" in item) return item.description;
+  return undefined;
+}
 
 export function LibraryView() {
   const [activeTab, setActiveTab] = useState("anime");
@@ -49,32 +56,36 @@ export function LibraryView() {
 
       {/* List */}
       <ul className="divide-y divide-neutral-100 dark:divide-neutral-900">
-        {currentList.map((item, index) => (
-          <li
-            key={item.title}
-            className="py-2.5 flex items-center justify-between gap-4"
-          >
-            <div className="flex items-center gap-3 min-w-0">
-              <span className="text-xs text-neutral-400 dark:text-neutral-500 tabular-nums w-6 shrink-0 text-right select-none">
-                {index + 1}.
-              </span>
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4 truncate text-sm"
-              >
-                <span className="truncate">{item.title}</span>
-                <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors shrink-0" />
-              </a>
-            </div>
-            {item.detail && (
-              <span className="text-xs text-neutral-500 dark:text-neutral-400 tabular-nums shrink-0">
-                {item.detail}
-              </span>
-            )}
-          </li>
-        ))}
+        {currentList.map((item, index) => {
+          const subtitle = getSubtitle(item);
+
+          return (
+            <li
+              key={item.title}
+              className="py-2.5 flex items-center justify-between gap-4"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-xs text-neutral-400 dark:text-neutral-500 tabular-nums w-6 shrink-0 text-right select-none">
+                  {index + 1}.
+                </span>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4 truncate text-sm"
+                >
+                  <span className="truncate">{item.title}</span>
+                  <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors shrink-0" />
+                </a>
+              </div>
+              {subtitle && (
+                <span className="text-xs text-neutral-500 dark:text-neutral-400 tabular-nums shrink-0">
+                  {subtitle}
+                </span>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

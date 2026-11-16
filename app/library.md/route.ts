@@ -11,23 +11,18 @@ export async function GET() {
     ``,
     `## Anime`,
     ``,
-    ...anime.map(
-      (item, index) =>
-        `${index + 1}. [${item.title}](${item.url})${
-          item.detail ? ` (${item.detail})` : ""
-        }`
-    ),
+    ...anime.map((item, index) => `${index + 1}. [${item.title}](${item.url})`),
     ``,
     `## Books`,
     ``,
     ...books.map(
-      (item, index) => `${index + 1}. [${item.title}](${item.url}) — ${item.detail}`
+      (item, index) => `${index + 1}. [${item.title}](${item.url}) — ${item.author}`
     ),
     ``,
     `## Music`,
     ``,
     ...songs.map(
-      (song, index) => `${index + 1}. [${song.title}](${song.url}) — ${song.detail}`
+      (song, index) => `${index + 1}. [${song.title}](${song.url}) — ${song.artist}`
     ),
     ``,
     `## Bookmarks`,
@@ -39,13 +34,12 @@ export async function GET() {
     `## Navigation`,
     `- [Home](${baseUrl}/index.md)`,
     `- [Writing](${baseUrl}/writing.md)`,
-    `- [Library](${baseUrl}/library.md)`,
     `- [About](${baseUrl}/about.md)`,
-    `- [Contact](${baseUrl}/contact.md)`,
-    `- [Privacy](${baseUrl}/privacy.md)`,
-  ].join("\n");
+  ];
 
-  return new Response(lines, {
-    headers: { "Content-Type": "text/markdown; charset=utf-8" },
+  return new Response(lines.join("\n"), {
+    headers: {
+      "Content-Type": "text/markdown; charset=utf-8",
+    },
   });
 }

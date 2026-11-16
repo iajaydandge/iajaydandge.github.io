@@ -10,15 +10,13 @@ export async function GET() {
     `> Things I watch, read, and listen to — anime, books, music, and bookmarks.`,
     ``,
     `## Anime`,
-    ...anime.map(
-      (item, i) => `${i + 1}. [${item.title}](${item.url})${item.detail ? ` (${item.detail})` : ""}`
-    ),
+    ...anime.map((item, i) => `${i + 1}. [${item.title}](${item.url})`),
     ``,
     `## Books`,
-    ...books.map((b, i) => `${i + 1}. [${b.title}](${b.url}) — ${b.detail}`),
+    ...books.map((b, i) => `${i + 1}. [${b.title}](${b.url}) — ${b.author}`),
     ``,
     `## Music`,
-    ...songs.map((s, i) => `${i + 1}. [${s.title}](${s.url}) — ${s.detail}`),
+    ...songs.map((s, i) => `${i + 1}. [${s.title}](${s.url}) — ${s.artist}`),
     ``,
     `## Bookmarks`,
     ...bookmarks.map((bm, i) => `${i + 1}. [${bm.title}](${bm.url})`),

@@ -1,10 +1,29 @@
-export interface MediaItem {
+export interface AnimeItem {
   title: string;
   url: string;
-  detail?: string;
 }
 
-export const anime: MediaItem[] = [
+export interface BookItem {
+  title: string;
+  url: string;
+  author: string;
+}
+
+export interface SongItem {
+  title: string;
+  url: string;
+  artist: string;
+}
+
+export interface BookmarkItem {
+  title: string;
+  url: string;
+  description?: string;
+}
+
+export type MediaItem = AnimeItem | BookItem | SongItem | BookmarkItem;
+
+export const anime: AnimeItem[] = [
   {
     title: "Naruto",
     url: "https://myanimelist.net/anime/20/Naruto",
@@ -35,73 +54,83 @@ export const anime: MediaItem[] = [
   },
 ];
 
-export const books: MediaItem[] = [
+export const books: BookItem[] = [
   {
     title: "Harry Potter and the Philosopher's Stone",
     url: "https://www.goodreads.com/book/show/72193.Harry_Potter_and_the_Sorcerer_s_Stone",
-    detail: "J.K. Rowling",
+    author: "J.K. Rowling",
   },
   {
     title: "Harry Potter and the Chamber of Secrets",
     url: "https://www.goodreads.com/book/show/15881.Harry_Potter_and_the_Chamber_of_Secrets",
-    detail: "J.K. Rowling",
+    author: "J.K. Rowling",
   },
   {
     title: "Harry Potter and the Prisoner of Azkaban",
     url: "https://www.goodreads.com/book/show/5.Harry_Potter_and_the_Prisoner_of_Azkaban",
-    detail: "J.K. Rowling",
+    author: "J.K. Rowling",
   },
   {
     title: "Harry Potter and the Goblet of Fire",
     url: "https://www.goodreads.com/book/show/6.Harry_Potter_and_the_Goblet_of_Fire",
-    detail: "J.K. Rowling",
+    author: "J.K. Rowling",
   },
   {
     title: "Harry Potter and the Order of the Phoenix",
     url: "https://www.goodreads.com/book/show/2.Harry_Potter_and_the_Order_of_the_Phoenix",
-    detail: "J.K. Rowling",
+    author: "J.K. Rowling",
   },
   {
     title: "Harry Potter and the Half-Blood Prince",
     url: "https://www.goodreads.com/book/show/1.Harry_Potter_and_the_Half_Blood_Prince",
-    detail: "J.K. Rowling",
+    author: "J.K. Rowling",
   },
   {
     title: "Harry Potter and the Deathly Hallows",
     url: "https://www.goodreads.com/book/show/136251.Harry_Potter_and_the_Deathly_Hallows",
-    detail: "J.K. Rowling",
+    author: "J.K. Rowling",
   },
   {
     title: "The Alchemist",
     url: "https://www.goodreads.com/book/show/18144590-the-alchemist",
-    detail: "Paulo Coelho",
+    author: "Paulo Coelho",
+  },
+  {
+    title: "Chandragupta: Path of a Fallen Demigod",
+    url: "https://www.goodreads.com/book/show/13424653-chandragupta-path-of-a-fallen-demigod",
+    author: "Rajat Pillai",
+  },
+  {
+    title: "Shriman Yogi",
+    url: "https://www.goodreads.com/book/show/6727757-shriman-yogi",
+    author: "Ranjit Desai",
   },
 ];
 
-export const songs: MediaItem[] = [
+export const songs: SongItem[] = [
   {
     title: "Believer",
     url: "https://music.youtube.com/watch?v=Kx7B-XvmFtE",
-    detail: "Imagine Dragons",
+    artist: "Imagine Dragons",
   },
   {
     title: "Thunder",
     url: "https://music.youtube.com/watch?v=9ssQKlLxBdQ",
-    detail: "Imagine Dragons",
+    artist: "Imagine Dragons",
   },
   {
     title: "Closer",
     url: "https://music.youtube.com/watch?v=r7zTKRonHXM",
-    detail: "The Chainsmokers",
+    artist: "The Chainsmokers",
   },
   {
     title: "Hymn for the Weekend",
     url: "https://music.youtube.com/watch?v=H3Kzh6RrnMc",
-    detail: "Coldplay",
+    artist: "Coldplay",
   },
 ];
 
-export const bookmarks: MediaItem[] = [
+export const bookmarks: BookmarkItem[] = [
   {
     title: "AI Evals: Everything You Need to Know",
     url: "https://hamel.dev/blog/posts/evals-faq",
