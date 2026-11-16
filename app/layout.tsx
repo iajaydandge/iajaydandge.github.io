@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Pet } from "@/components/pet";
+import { WebMCP } from "@/components/webmcp";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import "@/global.css";
@@ -95,8 +96,20 @@ function Navbar() {
 function Footer() {
   return (
     <footer className="mt-16 mb-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
-      <p>© {new Date().getFullYear()} MIT Licensed</p>
-      <div className="flex items-center gap-4">
+      <p>© {new Date().getFullYear()} Ajay Dandge</p>
+      <nav aria-label="Footer" className="flex items-center gap-4">
+        <Link
+          href="/contact"
+          className="hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
+        >
+          contact
+        </Link>
+        <Link
+          href="/privacy"
+          className="hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
+        >
+          privacy
+        </Link>
         <a
           href="/rss"
           target="_blank"
@@ -106,7 +119,7 @@ function Footer() {
           <span>rss</span>
           <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
         </a>
-      </div>
+      </nav>
     </footer>
   );
 }
@@ -138,6 +151,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Pet />
+          <WebMCP />
           <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
             <Navbar />
             {children}

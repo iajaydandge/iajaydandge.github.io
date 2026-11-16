@@ -53,6 +53,8 @@ export async function GET() {
     `- [Writing](${baseUrl}/writing.md)`,
     `- [Library](${baseUrl}/library.md)`,
     `- [About](${baseUrl}/about.md)`,
+    `- [Contact](${baseUrl}/contact.md)`,
+    `- [Privacy](${baseUrl}/privacy.md)`,
   ].join("\n");
 
   return new Response(lines, {

@@ -31,6 +31,40 @@ export async function generateMetadata() {
   };
 }
 
+const featuredProjects = [
+  {
+    name: "Contests",
+    href: "https://contests.ajaydandge.dev/",
+    description: "Track upcoming competitive programming contests",
+  },
+  {
+    name: "CodeRun",
+    href: "https://coderun.ajaydandge.dev/",
+    description: "Online code runner to write, run, and test code",
+  },
+  {
+    name: "Burrow",
+    href: "https://burrow.ajaydandge.dev/",
+    description:
+      "CLI to query PostgreSQL and MySQL databases directly or via SSH tunnel",
+  },
+  {
+    name: "Claude Usage Plugin",
+    href: "https://github.com/iajaydandge/claude-usage-plugin",
+    description: "Per-user token, cost, and session tracking in Claude Code",
+  },
+  {
+    name: "Password",
+    href: "https://password.ajaydandge.dev/",
+    description: "Local-first password manager",
+  },
+  {
+    name: "Mazes",
+    href: "https://mazes.ajaydandge.dev/",
+    description: "Maze generation and pathfinding algorithms",
+  },
+];
+
 export default function Page() {
   const recentPosts = getBlogPosts()
     .sort(
@@ -76,9 +110,8 @@ export default function Page() {
           get distracted by something completely unrelated.
         </p>
         <p className="text-neutral-800 dark:text-neutral-200">
-          This is my little corner of the internet. A place for things I&apos;m
-          working on, things I&apos;m thinking about, and things I find
-          interesting.
+          This is my personal space on the web for things I&apos;m building,
+          exploring, and learning.
         </p>
       </div>
 
@@ -146,69 +179,49 @@ export default function Page() {
             href="/about"
             className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
           >
-            All projects →
+            More on /about →
           </Link>
         </div>
-        <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
-          <a
-            href="https://contests.ajaydandge.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
+
+        <ul className="space-y-2 text-sm">
+          {featuredProjects.map((project) => (
+            <li key={project.name}>
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center hover:underline underline-offset-4 text-neutral-900 dark:text-neutral-100"
+              >
+                <span>{project.name}</span>
+                <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
+              </a>
+              <span className="text-neutral-500 dark:text-neutral-400">
+                {" "}
+                — {project.description}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <hr className="my-8 border-neutral-200 dark:border-neutral-800" />
+
+      {/* Library */}
+      <div className="mb-8">
+        <div className="flex justify-between items-baseline mb-3">
+          <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+            Library
+          </h2>
+          <Link
+            href="/library"
+            className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
           >
-            <span>Contests</span>
-            <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
-          </a>
-          {" · "}
-          <a
-            href="https://coderun.ajaydandge.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
-          >
-            <span>CodeRun</span>
-            <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
-          </a>
-          {" · "}
-          <a
-            href="https://burrow.ajaydandge.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
-          >
-            <span>Burrow</span>
-            <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
-          </a>
-          {" · "}
-          <a
-            href="https://github.com/iajaydandge/claude-usage-plugin"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
-          >
-            <span>Claude Usage Plugin</span>
-            <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
-          </a>
-          {" · "}
-          <a
-            href="https://mazes.ajaydandge.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
-          >
-            <span>Mazes</span>
-            <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
-          </a>
-          {" · "}
-          <a
-            href="https://password.ajaydandge.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
-          >
-            <span>Password</span>
-            <ArrowUpRight className="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
-          </a>
+            Explore library →
+          </Link>
+        </div>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          Things I watch, read, and listen to — a curated collection of anime,
+          books, music, and bookmarks I return to.
         </p>
       </div>
     </section>

@@ -7,16 +7,34 @@ export default function NotFound() {
         404 — Page not found
       </h1>
       <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-        Whatever was here isn&apos;t anymore — maybe it moved, was rewritten,
-        or never existed in the first place.
+        Whatever was here isn&apos;t anymore — maybe it moved, was rewritten, or
+        never existed in the first place.
       </p>
-      <div className="pt-2">
+      <div className="pt-2 flex flex-wrap gap-4 text-xs text-neutral-500 dark:text-neutral-400">
         <Link
           href="/"
-          className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
+          className="hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
         >
           ← Back to home
         </Link>
+        <Link
+          href="/llms.txt"
+          className="hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4 font-mono"
+        >
+          llms.txt
+        </Link>
+        <Link
+          href="/contact"
+          className="hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
+        >
+          contact
+        </Link>
+        <a
+          href="/sitemap.xml"
+          className="hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
+        >
+          sitemap
+        </a>
       </div>
     </section>
   );
