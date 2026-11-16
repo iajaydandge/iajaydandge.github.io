@@ -1,0 +1,107 @@
+---
+title: "Python Path Resolution"
+publishedAt: "2026-11-16"
+summary: "How sys.path[0] behaves when running scripts from nested folders, why sibling imports break, and the difference between PYTHONPATH and python -m."
+type: "note"
+---
+
+A pattern that catches me off guard whenever I reorganize a Python project is import failure after moving a file into a subfolder.
+
+Take a typical project layout:
+
+```
+my-project/
+├── src/
+│   ├── utils.py
+│   └── app/
+│       └── main.py
+```
+
+If `main.py` was sitting directly inside `src/`, running `python src/main.py` from the project root works without any trouble:
+
+```python
+# src/main.py
+import utils
+```
+
+Python finds `utils.py`, executes it, and everything runs smoothly.
+
+## What breaks when nesting the script
+
+The problem happens when I move `main.py` one level deeper into `src/app/main.py`.
+
+From the project root, I run:
+
+```bash
+python src/app/main.py
+```
+
+And immediately hit:
+
+```
+ModuleNotFoundError: No module named 'utils'
+```
+
+Trying `from src import utils` or `from app import ...` doesn't help either.
+
+The reason comes down to how Python initializes `sys.path[0]`. When passing a script path directly to the interpreter (`python path/to/script.py`), Python does not set `sys.path[0]` to the current working directory where the terminal command was executed. Instead, it sets `sys.path[0]` to the directory containing the script.
+
+With `python src/main.py`, `sys.path[0]` is `.../my-project/src`. Python searches inside `src/` and finds `utils.py`.
+
+With `python src/app/main.py`, `sys.path[0]` is `.../my-project/src/app`. Python only searches inside `app/` (and standard library / site-packages). It has no knowledge of `src/` or `my-project/`, so imports pointing to parent or sibling modules fail.
+
+## Solutions
+
+### 1. Run as a module with -m
+
+The cleanest approach is running the script as a module from the project root:
+
+```bash
+python -m src.app.main
+```
+
+When using the `-m` flag, Python sets `sys.path[0]` to the current working directory (`.`).
+
+Because the working directory is `my-project/`, absolute imports rooted at `src` resolve cleanly:
+
+```python
+# src/app/main.py
+from src import utils
+```
+
+This avoids hardcoded path hacks and keeps import statements consistent across both local development and installed packages.
+
+### 2. Set PYTHONPATH
+
+If the script must be run directly as a file path, setting `PYTHONPATH` forces Python to include the root or source directory in its search list:
+
+```bash
+PYTHONPATH=. python src/app/main.py
+# or if imports are relative to src:
+PYTHONPATH=src python src/app/main.py
+```
+
+Python inserts whatever is listed in `PYTHONPATH` immediately after `sys.path[0]`, allowing it to locate modules outside the script's immediate folder.
+
+### 3. Modifying sys.path at runtime
+
+For standalone utility scripts that shouldn't require environment variables or specific invocation flags:
+
+```python
+import sys
+from pathlib import Path
+
+# Add project root or src directory to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import utils
+```
+
+It works reliably for self-contained scripts, though I try to avoid it in larger codebases because it litters imports with manual path surgery.
+
+## The core rule to remember
+
+- `python <file>` sets `sys.path[0]` to the directory of the file (`dirname(file)`).
+- `python -m <module>` sets `sys.path[0]` to the current working directory (`cwd`).
+
+Whenever imports fail after moving a file into a subfolder, `sys.path[0]` is almost always pointing one directory too deep.

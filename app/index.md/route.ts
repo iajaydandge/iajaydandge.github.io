@@ -5,6 +5,7 @@ export const dynamic = "force-static";
 
 export async function GET() {
   const recentPosts = getBlogPosts()
+    .filter((post) => (post.metadata.type || "article") === "article")
     .sort(
       (a, b) =>
         new Date(b.metadata.publishedAt).getTime() -
