@@ -16,26 +16,21 @@ export async function getStaticPaths() {
 
 export async function GET({ props }: { props: { post: CollectionEntry<"blog"> } }) {
   const { post } = props;
-  const slug = post.id.replace(/\.mdx$/, "");
+  const postType = post.data.type || "article";
+  const capitalizedType = postType.charAt(0).toUpperCase() + postType.slice(1);
 
   const content = [
     `# ${post.data.title}`,
     ``,
-    `Published: ${formatDate(post.data.publishedAt)}`,
-    `Type: ${post.data.type || "article"}`,
-    `Summary: ${post.data.summary}`,
-    `Path: /blog/${slug}`,
-    ``,
-    `---`,
+    `${formatDate(post.data.publishedAt, false)} · ${capitalizedType}`,
     ``,
     post.body,
     ``,
     `---`,
     ``,
     `## Navigation`,
-    `- [All Writing](/writing.md)`,
+    `- [All writing](/writing.md)`,
     `- [Home](/index.md)`,
-    `- [Machine Index (llms.txt)](/llms.txt)`,
   ].join("\n");
 
   return new Response(content, {

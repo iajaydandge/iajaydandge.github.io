@@ -6,6 +6,11 @@ import { formatDate } from "@/utils/date";
 
 export const prerender = true;
 
+function getReadingTime(body: string = ""): string {
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.ceil(words / 200))} min read`;
+}
+
 export async function GET() {
   const posts = await getCollection("blog");
   const recentPosts = posts
@@ -20,32 +25,33 @@ export async function GET() {
   const content = [
     `# Ajay Dandge`,
     ``,
-    `Developer, occasional writer, curious human.`,
+    `I'm Ajay — developer, occasional writer, curious human.`,
     ``,
     `I build software, explore ideas, write things down, and occasionally get distracted by something completely unrelated.`,
     ``,
     `This is my personal space on the web for things I'm building, exploring, and learning.`,
     ``,
-    `## Recently Written`,
+    `## Recently written`,
     ``,
     ...recentPosts.map((post) => {
       const slug = post.id.replace(/\.mdx$/, "");
       const postType = post.data.type || "article";
       const capitalizedType =
         postType.charAt(0).toUpperCase() + postType.slice(1);
-      return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt)} · ${capitalizedType}): ${post.data.summary}`;
+      const readingTime = getReadingTime(post.body);
+      return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt, false)} · ${capitalizedType} · ${readingTime})`;
     }),
     ``,
     `[All writing →](/writing.md)`,
     ``,
-    `## A Few Things I've Made`,
+    `## A few things I've made`,
     ``,
     `- [Contests](https://contests.ajaydandge.dev/) — Track upcoming competitive programming contests`,
     `- [CodeRun](https://coderun.ajaydandge.dev/) — Online code runner to write, run, and test code`,
     `- [Burrow](https://burrow.ajaydandge.dev/) — CLI to query PostgreSQL and MySQL databases directly or via SSH tunnel`,
     `- [Claude Usage Plugin](https://github.com/iajaydandge/claude-usage-plugin) — Per-user token, cost, and session tracking in Claude Code`,
-    `- [Mazes](https://mazes.ajaydandge.dev/) — Maze generation and pathfinding algorithms`,
     `- [Password](https://password.ajaydandge.dev/) — Local-first password manager`,
+    `- [Mazes](https://mazes.ajaydandge.dev/) — Maze generation and pathfinding algorithms`,
     ``,
     `[More on /about →](/about.md)`,
     ``,
@@ -54,11 +60,6 @@ export async function GET() {
     `Things I watch, read, and listen to — a curated collection of anime, books, music, and bookmarks I return to.`,
     ``,
     `[Explore library →](/library.md)`,
-    ``,
-    `## Machine Endpoints`,
-    ``,
-    `- [Machine Index](/llms.txt) — High-level LLM traversal manifest`,
-    `- [Full Context Archive](/llms-full.txt) — Complete text archive for deep agent ingestion`,
     ``,
     `## Navigation`,
     `- [Home](/index.md)`,

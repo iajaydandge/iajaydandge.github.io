@@ -53,7 +53,11 @@ Engineering blog and digital corner of Ajay Dandge.
 3. **Route Sync Checklist**: When adding or removing top-level routes, always update:
    - Navigation in `src/components/navbar.astro` and `src/components/footer.astro`
    - Route list and machine index in `src/pages/llms.txt.ts`, `src/pages/llms-full.txt.ts`, and `src/pages/robots.txt.ts`
-4. **Markdown Route Pairing**: Every public route must have a 1:1 plain Markdown representation (`.md`) for LLMs and `curl` access (`/index.md`, `/writing.md`, `/library.md`, `/about.md`, `/contact.md`, `/privacy.md`, `/404.md`, and `/blog/[slug].md`). Keep `llms.txt` and `llms-full.txt` lean by referencing these individual `.md` routes without inflating payload size.
+4. **Markdown Route Pairing & Exact 1:1 Parity**:
+   - Every public route must have a 1:1 plain Markdown representation (`.md`) for LLMs and `curl` access (`/index.md`, `/writing.md`, `/library.md`, `/about.md`, `/contact.md`, `/privacy.md`, and `/blog/[slug].md`).
+   - The content, structure, headings, section order, and text between HTML (`.astro`) and Markdown (`.md` / `llms.txt` / `llms-full.txt`) endpoints must match **word-for-word and structurally**. Content must never differ or drift between HTML and Markdown representations.
+   - Never introduce corporate boilerplate, synthetic marketing descriptions, or resume buzzwords into `.md` or `llms.txt` files. They must speak the exact same natural, human language and authentic tone as the website.
+   - The `404` page is an error state, not a public content route. While a paired `404.md` can exist for 404 content negotiation, it must **never** be documented or listed in `llms.txt`, `llms-full.txt`, navigation bars, footer links, `sitemap.xml`, or `robots.txt`.
 5. **Path Aliases & Imports**: 
    - Always use `@/` path aliases (e.g., `@/data/library`, `@/components/...`) for internal imports instead of relative paths (`./`, `../`).
    - Always use **named imports** as much as possible; avoid default imports unless strictly required by external library or Astro framework conventions.

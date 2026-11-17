@@ -28,7 +28,10 @@ export async function GET() {
     ``,
     ...articles.map((post) => {
       const slug = post.id.replace(/\.mdx$/, "");
-      return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt)}): ${post.data.summary}`;
+      const postType = post.data.type || "article";
+      const capitalizedType =
+        postType.charAt(0).toUpperCase() + postType.slice(1);
+      return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt, false)} · ${capitalizedType})`;
     }),
     ``,
     `## Notes`,
@@ -36,7 +39,10 @@ export async function GET() {
     ...(notes.length > 0
       ? notes.map((post) => {
           const slug = post.id.replace(/\.mdx$/, "");
-          return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt)}): ${post.data.summary}`;
+          const postType = post.data.type || "note";
+          const capitalizedType =
+            postType.charAt(0).toUpperCase() + postType.slice(1);
+          return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt, false)} · ${capitalizedType})`;
         })
       : [`Nothing here right now — still brewing or in drafts.`]),
     ``,
@@ -45,7 +51,10 @@ export async function GET() {
     ...(thoughts.length > 0
       ? thoughts.map((post) => {
           const slug = post.id.replace(/\.mdx$/, "");
-          return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt)}): ${post.data.summary}`;
+          const postType = post.data.type || "thought";
+          const capitalizedType =
+            postType.charAt(0).toUpperCase() + postType.slice(1);
+          return `- [${post.data.title}](/blog/${slug}.md) (${formatDate(post.data.publishedAt, false)} · ${capitalizedType})`;
         })
       : [`Nothing here right now — still brewing or in drafts.`]),
     ``,
