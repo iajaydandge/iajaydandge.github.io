@@ -1,0 +1,280 @@
+---
+title: "Making Web Apps Agent-Ready"
+publishedAt: "2026-11-18"
+summary: "An architectural exploration of what it takes to build an agent-ready web app — analyzing Vercel's is-agentic methodology, Cloudflare's isitagentready benchmark, DNS-AID, edge content negotiation, and the line between content and commerce architectures."
+---
+
+As autonomous coding agents, web scrapers, and LLM-powered browsers transition into everyday tools, the mechanics of web consumption are undergoing a quiet shift.
+
+For decades, the web was designed almost exclusively for human eyes: responsive layouts, visual typography, cascading styles, and client-side hydration scripts. But an AI agent experiences the web through an entirely different lens. It does not render animations or admire aesthetic white space. Instead, an agent parses document trees, monitors HTTP status codes, and expends context tokens attempting to extract facts and structure from raw markup.
+
+This shift presents a distinct engineering challenge: **how can web apps and content sites be made legible and seamless for autonomous agents while remaining fast and unencumbered for human readers?**
+
+While traditional audits like **Google Lighthouse** focus on human-centric metrics (render performance, layout stability, and visual accessibility), a new class of diagnostic tools has emerged to evaluate machine-readiness:
+
+- [isitagentready.com](https://isitagentready.com/) by **Cloudflare**: Audits domains across emerging checks spanning discoverability, content accessibility, bot access control, tool discovery, and agentic commerce.
+- [is-agentic.com](https://is-agentic.com/) by **Vercel** (with its design philosophy on [is-agentic.com/about](https://is-agentic.com/about) and scoring model on [is-agentic.com/methodology](https://is-agentic.com/methodology)): Uses scans powered by Ora to assess foundational web standards, developer surfaces, and site-type lenses.
+- Alongside these, **Lighthouse** (in Chrome DevTools and PageSpeed Insights) has introduced an **Agentic Browsing** audit.
+
+Understanding these benchmarks requires looking at how different web properties should approach agent readiness—and recognizing that not all websites share the same architecture.
+
+## The Archetype Divide: Context Over Universal Checklists
+
+A common misstep in preparing a site for AI agents is treating all websites identically. A personal blog, a SaaS dashboard, and an e-commerce shop have entirely different relationships with visiting software.
+
+Both Vercel's [methodology](https://is-agentic.com/methodology) and Cloudflare's benchmark account for this by evaluating websites through distinct **Site-Type Lenses**:
+
+| Web Archetype | Primary Agent Requirement | Key Protocols & Surfaces |
+| :--- | :--- | :--- |
+| **Content & Docs** | Token-efficient text, discovery, semantic structure | Markdown route pairing, RFC 8288 Link headers, `llms.txt`, DNS-AID |
+| **Apps & Developer Platforms** | Tool invocation, authentication, actionability | Model Context Protocol (MCP), Agent Skills, OAuth / `auth.md`, API catalogs |
+| **E-Commerce** | Programmatic checkout and payments | Universal Commerce Protocol (UCP), Agentic Commerce Protocol (ACP), x402, MPP |
+
+### 1. Applications: Actionability
+
+When software visits a developer platform or an interactive tool, the goal is execution:
+
+- **Model Context Protocol (MCP)**: Providing discoverable server metadata, including emerging MCP Server Card proposals such as `/.well-known/mcp/server-card.json`, so coding agents can discover and understand remote tools.
+- **Agent Skills**: Distributing skills in a standardized directory format containing a `SKILL.md` file for agents like Claude Code, Cursor, or Codex.
+- **OAuth & Auth.md**: Enabling secure machine authentication against protected endpoints.
+- **API Catalogs (RFC 9727)**: Publishing machine-readable API catalogs that can link to OpenAPI specifications, helping agents discover available APIs without parsing human-facing documentation.
+
+### 2. Commerce: Transactional State
+
+When software visits an online store, the goal is transaction:
+
+- **Universal Commerce Protocol (UCP)** and **Agentic Commerce Protocol (ACP)** for standardizing cart, catalog, and checkout lifecycles.
+- **Machine Payment Protocol (MPP)** and **x402 (HTTP 402 Payment Required)** for autonomous micropayments.
+
+### 3. Content: High-Fidelity Comprehension
+
+For an engineering blog, documentation site, or personal corner, attempting to implement artificial MCP endpoints or commerce stubs creates synthetic noise. An agent arriving at an article is not looking to book an appointment or buy a product. The objective is singular: **to read, synthesize, and cite information with minimal token overhead and maximum fidelity**.
+
+For content sites, agent-ready architecture rests on four fundamental layers:
+
+1. **Discoverability** (robots.txt, XML/RSS sitemaps, RFC 8288 Link headers, DNS-AID)
+2. **Content Accessibility** (1:1 Markdown route pairing & edge negotiation)
+3. **Bot Access Control** (Content Signals & transparent AI bot rules)
+4. **Structural Parity** (Substantive content alignment between HTML and machine endpoints)
+
+## The Architecture of an Agent-Ready Content Site
+
+Building an agent-ready content site involves coordinating DNS resolution, edge routing, and build-time static generation.
+
+```text
+┌────────────────────────────────────────────────────────┐
+│                   DNS Layer (DNS-AID)                  │
+│      _index._agents HTTPS record with ALPN & DNSSEC    │
+└───────────────────────────┬────────────────────────────┘
+                            │
+┌───────────────────────────▼────────────────────────────┐
+│                    Edge Middleware                     │
+│    Inspects 'Accept: text/markdown' & RFC 8288 Links   │
+└─────────────┬────────────────────────────┬─────────────┘
+              │                            │
+┌─────────────▼──────────────┐ ┌───────────▼─────────────┐
+│       HTML Endpoints       │ │   Paired .md Endpoints  │
+│  (For Human Readers / UI)  │ │   (For Visiting Agents) │
+└────────────────────────────┘ └─────────────────────────┘
+```
+
+### 1. 1:1 Markdown Route Pairing
+
+Feeding raw HTML into an LLM wastes tokens on markup scaffolding: `<div>`, `<span>`, CSS class names, and embedded SVGs. A clean Markdown representation removes much of that presentation-related overhead.
+
+The solution is static Markdown route pairing. Every public HTML route has a corresponding pre-rendered `.md` endpoint:
+
+- `/` → `/index.md`
+- `/about` → `/about.md`
+- `/writing` → `/writing.md`
+- `/library` → `/library.md`
+- `/contact` → `/contact.md`
+- `/privacy` → `/privacy.md`
+- `/blog/[slug]` → `/blog/[slug].md`
+
+A foundational requirement of this pattern is **substantive content and structural parity**. If `/about.md` contains different headings, omitted sections, or added information compared to `/about`, the representations drift and can mislead visiting models. Parity ensures human readers and autonomous agents receive the same underlying information.
+
+### 2. Edge Content Negotiation (RFC 8288)
+
+Agents should not have to guess that an alternate representation exists at a `.md` path. When software requests an article, it declares its format preference using the HTTP `Accept` header:
+
+```http
+GET /writing HTTP/1.1
+Host: ajaydandge.dev
+Accept: text/markdown
+```
+
+At the edge (via Cloudflare Pages middleware in `functions/_middleware.ts`), the incoming request is resolved before static assets are returned:
+
+```typescript
+export const onRequest: PagesFunction = async (context) => {
+  const { request, next } = context;
+  const url = new URL(request.url);
+  const acceptHeader = request.headers.get("Accept") || "";
+
+  // Check whether the client explicitly accepts Markdown.
+  const acceptsMarkdown = acceptHeader
+    .split(",")
+    .some((item) => {
+      const [type, ...params] = item.trim().split(";");
+      const quality = params.find((param) => param.trim().startsWith("q="));
+      return (
+        type.trim() === "text/markdown" &&
+        (!quality || Number(quality.split("=")[1]) > 0)
+      );
+    });
+
+  const isMarkdownPath = url.pathname.endsWith(".md");
+
+  // Rewrite Markdown requests to the corresponding static file.
+  if (acceptsMarkdown && !isMarkdownPath) {
+    const mdPath =
+      url.pathname === "/"
+        ? "/index.md"
+        : `${url.pathname.replace(/\/$/, "")}.md`;
+
+    const markdownResponse = await context.env.ASSETS.fetch(
+      new Request(new URL(mdPath, url.origin), request)
+    );
+
+    if (markdownResponse.ok) {
+      const headers = new Headers(markdownResponse.headers);
+      headers.set("Content-Type", "text/markdown; charset=utf-8");
+
+      return new Response(markdownResponse.body, {
+        status: markdownResponse.status,
+        statusText: markdownResponse.statusText,
+        headers,
+      });
+    }
+
+    // Fall back to the normal response if no Markdown file exists.
+  }
+
+  const response = await next();
+
+  // Attach RFC 8288 Link headers to HTML responses.
+  if (response.headers.get("Content-Type")?.includes("text/html")) {
+    const mdUrl =
+      url.pathname === "/"
+        ? "/index.md"
+        : `${url.pathname.replace(/\/$/, "")}.md`;
+
+    const headers = new Headers(response.headers);
+    const existingLink = headers.get("Link");
+
+    const alternateLink =
+      `</llms.txt>; rel="describedby", ` +
+      `<${mdUrl}>; rel="alternate"; type="text/markdown"`;
+
+    headers.set(
+      "Link",
+      existingLink
+        ? `${existingLink}, ${alternateLink}`
+        : alternateLink
+    );
+
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+
+  return response;
+};
+```
+
+When an agent requests Markdown, the edge rewrites the request internally and returns the corresponding static file with `Content-Type: text/markdown; charset=utf-8`. If a Markdown version is unavailable, the request falls back to the normal response.
+
+For standard browsers, the response attaches an RFC 8288 `Link` header indicating `rel="describedby"` for `/llms.txt` and `rel="alternate"` for the page's `.md` version, providing a transparent discovery trail.
+
+This is an illustrative implementation; production middleware should be tested against the site's routing, caching, and static asset behavior.
+
+### 3. Machine Orientation: `llms.txt` & `llms-full.txt`
+
+Following the emerging [llms.txt convention](https://llmstxt.org/), two root manifests can provide structured orientation:
+
+1. **`/llms.txt`**: A curated high-level index that summarizes the site, outlines primary sections, documents available CLI tools (satisfying automated tool-availability scans), and lists all articles with summaries.
+2. **`/llms-full.txt`**: A single comprehensive context archive containing the full text of all pages and posts for agents performing offline ingestion or local embedding.
+
+Both manifests are generated at build time directly from content collections, preventing index desynchronization.
+
+The `llms.txt` convention is still evolving and should be treated as an additional discovery surface rather than a replacement for established mechanisms such as sitemaps or normal web navigation.
+
+### 4. DNS for AI Discovery (DNS-AID) & DNSSEC
+
+One of the newer checks in Cloudflare's `isitagentready` benchmark is **DNS-AID** (DNS Agent Interface Discovery), an emerging approach to advertising agent-related endpoints through DNS.
+
+DNS-AID discovery proposals use DNS records, including HTTPS/SVCB record mechanisms defined in [RFC 9460](https://www.rfc-editor.org/rfc/rfc9460). RFC 9460 defines the HTTPS and SVCB record types; it does not itself standardize the DNS-AID discovery convention.
+
+Rather than making exploratory HTTP requests across arbitrary paths, software can query DNS to determine whether a domain advertises agentic interfaces:
+
+```text
+_index._agents.ajaydandge.dev. 300 IN HTTPS 1 ajaydandge.dev. (
+    alpn="h2,h3"
+    port=443
+    mandatory=alpn,port
+)
+```
+
+Key technical parameters:
+
+- `alpn="h2,h3"`: Informs connecting clients that the server supports HTTP/2 and HTTP/3 over TLS.
+- `port=443`: Explicit port specification.
+- `mandatory=alpn,port`: Indicates that the listed parameters are mandatory for clients interpreting the record.
+- **DNSSEC Validation (`AD=true`)**: DNSSEC allows validating resolvers to authenticate DNS responses. The `AD` (Authenticated Data) flag is set by a validating recursive resolver when it has successfully validated the response; enabling DNSSEC at the authoritative nameserver alone does not guarantee that every query will return `AD=true`.
+
+### 5. Transparent Bot Signals
+
+Rather than blocking automated software with challenge walls that degrade accessibility, bot control can rely on declarative signals in `robots.txt`:
+
+```text
+User-agent: *
+Allow: /
+
+# AI Content Signals
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+# Machine Discovery & Sitemaps
+Sitemap: https://ajaydandge.dev/rss.xml
+Sitemap: https://ajaydandge.dev/sitemap.xml
+```
+
+The `Content-Signal` directive communicates preferences:
+
+- `search=yes`: Search engine indexing and citations are welcomed.
+- `ai-input=yes`: AI agents and assistive browsers can read and process content for direct user queries.
+- `ai-train=no`: Signals that content is not intended for use in AI training.
+
+These signals are declarative preferences, not technical access controls. Their interpretation depends on the systems consuming them. Similarly, `robots.txt` communicates crawling preferences but does not prevent access to content.
+
+RSS and XML sitemaps serve complementary purposes: RSS provides a feed of recent content, while an XML sitemap helps search engines discover URLs across a site.
+
+## Results & Observations
+
+Auditing and implementing these architectural layers directly improves scores towards a clean 100 across these platforms.
+
+The following are observations from the scans performed during this implementation, rather than permanent guarantees of the respective scoring systems:
+
+- **Cloudflare's isitagentready.com**: Reaching **100/100 (Level 5 Agent-Native)** in the Content Site assessment.
+  - **Discoverability**: Valid robots.txt structure, XML and RSS discovery, RFC 8288 Link headers, and DNS-AID records.
+  - **Content Accessibility**: Edge content negotiation returning clean `text/markdown`.
+  - **Bot Access Control**: Transparent wildcard rules and explicit Content Signals.
+  - **Protocol Discovery & Commerce**: Non-applicable application and commerce capabilities are not treated as mandatory requirements for a content-focused site.
+  - **Report**: [View Cloudflare Agent Readiness Report](https://isitagentready.com/ajaydandge.dev?profile=content)
+
+- **Vercel's is-agentic.com**: Reaching **100/100 AI-agent readiness score** in the assessed site profile.
+  - Confirms clean semantic HTML, correct HTTP status responses, identity metadata, and discoverable documentation.
+  - **Report**: [View Vercel Agentic Readiness Scan](https://is-agentic.com/scan/ajaydandge.dev)
+
+- **Chrome DevTools / Lighthouse**: Achieving a clean **100 across the traditional categories**, with the **Agentic Browsing** audits passing alongside Performance, Accessibility, Best Practices, and SEO.
+  - **Report**: [View PageSpeed Insights Desktop Report](https://pagespeed.web.dev/analysis/https-ajaydandge-dev/1wgj8fu08s?form_factor=desktop)
+
+Unlike traditional Lighthouse categories, Agentic Browsing does not currently produce a conventional weighted score out of 100. It reports a fractional pass ratio and individual audit results. The category is experimental and its checks continue to evolve.
+
+Importantly, implementing agent readiness at the edge and at build time adds zero client-side JavaScript to human browsing sessions. Human visitors receive pure, lightweight HTML without additional overhead, while automated agents receive clean, token-efficient Markdown.
+
+Agent readiness scores are useful diagnostic signals, but they do not guarantee that every autonomous agent can successfully navigate or understand a website. Actual agent testing remains important for validating content retrieval, comprehension, attribution, and navigation.
+
+Agent readiness is ultimately about semantic clarity and protocol adherence. By pairing content with clean Markdown, serving proper negotiation headers, configuring DNS discovery, and maintaining consistent content across representations, the web becomes more accessible to both human visitors and autonomous machines.
