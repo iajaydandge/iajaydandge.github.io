@@ -37,6 +37,9 @@ Engineering blog and digital corner of Ajay Dandge.
    - Wait for user review, feedback, or explicit approval.
    - Only implement after the user approves the final plan. Never jump ahead to execution without approval.
 3. **In-Code Documentation Traceability**: When implementing configurations, features, or protocols, always include the official documentation or RFC URL references in code comments (at the top of files or above key implementation blocks) so that everything is directly traceable to the official source.
+4. **Commit Message Style**:
+   - Strictly use natural, lowercase, concise descriptions (e.g. `removed artificial mcp and agent skills endpoints and updated agents.md`, `refactor library data to use author and artist`).
+   - Never use corporate Conventional Commit prefixes (e.g. `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`) or capitalized subject lines. Keep commit messages authentic, human, and consistent with the repository's historical log.
 
 ## Key Invariants
 
