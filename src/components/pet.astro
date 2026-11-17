@@ -1,0 +1,276 @@
+---
+// @see https://docs.astro.build/en/guides/client-side-scripts/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+---
+
+<script>
+  // Retro desktop pet companion (Oneko, Oinu, Ousagi)
+  // Preserves strict AGENTS.md invariants:
+  // - 100% non-blocking pointer-events: none
+  // - Sleep & wake cycle: 10s initial stationary idle, 5s subsequent
+  // - Sleeps undisturbed 1-2 minutes ignoring cursor, then wakes automatically
+
+  (() => {
+    // Check for reduced motion preference
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    // Prevent multiple instances if navigating
+    if (document.getElementById("retro-pet")) {
+      return;
+    }
+
+    type PetType = "oneko" | "oinu" | "ousagi";
+    const rand = Math.random();
+    const activePet: PetType = rand < 0.33 ? "oneko" : rand < 0.66 ? "oinu" : "ousagi";
+
+    const petEl = document.createElement("div");
+    petEl.id = "retro-pet";
+    petEl.dataset.pet = activePet;
+    petEl.style.width = "32px";
+    petEl.style.height = "32px";
+    petEl.style.position = "fixed";
+    petEl.style.pointerEvents = "none";
+    petEl.style.imageRendering = "pixelated";
+    petEl.style.zIndex = activePet === "oinu" ? "9998" : "9999";
+    petEl.style.backgroundImage = `url('/${activePet}.webp')`;
+
+    if (activePet === "ousagi") {
+      petEl.style.filter = "grayscale(100%) brightness(200%) contrast(200%)";
+    }
+
+    const initialPos = activePet === "oinu" ? 64 : 32;
+    let petPosX = initialPos;
+    let petPosY = initialPos;
+    let mousePosX = initialPos;
+    let mousePosY = initialPos;
+
+    petEl.style.left = `${petPosX - 16}px`;
+    petEl.style.top = `${petPosY - 16}px`;
+    document.body.appendChild(petEl);
+
+    let frameCount = 0;
+    let idleTime = 0;
+    let idleAnimation: "scratch" | "sleeping" | null = null;
+    let idleAnimationFrame = 0;
+    let isSleeping = false;
+    let isInitialCycle = true;
+    let sleepStartTime = 0;
+    let sleepDurationMs = 0;
+    let wakeUpFrames = 0;
+
+    const petSpeed = 10;
+
+    const spriteSets: Record<string, [number, number][]> = {
+      idle: [[-3, -3]],
+      alert: [[-7, -3]],
+      scratch: [
+        [-5, 0],
+        [-6, 0],
+        [-7, 0],
+      ],
+      scratchWallN: [
+        [0, 0],
+        [0, -1],
+      ],
+      scratchWallS: [
+        [-7, -1],
+        [-6, -2],
+      ],
+      scratchWallE: [
+        [-2, -2],
+        [-2, -3],
+      ],
+      scratchWallW: [
+        [-4, 0],
+        [-4, -1],
+      ],
+      tired: [[-3, -2]],
+      sleeping: [
+        [-2, 0],
+        [-2, -1],
+      ],
+      N: [
+        [-1, -2],
+        [-1, -3],
+      ],
+      NE: [
+        [0, -2],
+        [0, -3],
+      ],
+      E: [
+        [-3, 0],
+        [-3, -1],
+      ],
+      SE: [
+        [-5, -1],
+        [-5, -2],
+      ],
+      S: [
+        [-6, -3],
+        [-7, -2],
+      ],
+      SW: [
+        [-5, -3],
+        [-6, -1],
+      ],
+      W: [
+        [-4, -2],
+        [-4, -3],
+      ],
+      NW: [
+        [-1, 0],
+        [-1, -1],
+      ],
+    };
+
+    function setSprite(name: string, frame: number) {
+      const set = spriteSets[name] || spriteSets.idle;
+      const sprite = set[frame % set.length];
+      petEl.style.backgroundPosition = `${sprite[0] * 32}px ${sprite[1] * 32}px`;
+    }
+
+    function resetIdleAnimation() {
+      idleAnimation = null;
+      idleAnimationFrame = 0;
+    }
+
+    const onMouseMove = (event: MouseEvent) => {
+      mousePosX = event.clientX;
+      mousePosY = event.clientY;
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+
+    function frame() {
+      frameCount++;
+
+      // Waking up alert reaction (~1.5s)
+      if (wakeUpFrames > 0) {
+        wakeUpFrames--;
+        setSprite("alert", 0);
+        petEl.style.left = `${petPosX - 16}px`;
+        petEl.style.top = `${petPosY - 16}px`;
+        return;
+      }
+
+      // If sleeping, sleep undisturbed for 1-2 minutes ignoring cursor
+      if (isSleeping) {
+        idleAnimationFrame++;
+        const elapsedSleep = Date.now() - sleepStartTime;
+
+        if (elapsedSleep < 1500) {
+          setSprite("tired", 0);
+        } else {
+          setSprite("sleeping", Math.floor(idleAnimationFrame / 4));
+        }
+
+        // Auto wake up when sleep duration completes
+        if (elapsedSleep >= sleepDurationMs) {
+          isSleeping = false;
+          idleAnimation = null;
+          idleAnimationFrame = 0;
+          idleTime = 0;
+          wakeUpFrames = 10;
+          setSprite("alert", 0);
+        }
+
+        petEl.style.left = `${petPosX - 16}px`;
+        petEl.style.top = `${petPosY - 16}px`;
+        return;
+      }
+
+      const diffX = petPosX - mousePosX;
+      const diffY = petPosY - mousePosY;
+      const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+
+      if (distance < petSpeed || distance < 48) {
+        idleTime++;
+
+        const minX = 32;
+        const minY = 32;
+        const maxX = window.innerWidth - 32;
+        const maxY = window.innerHeight - 32;
+
+        let hitWall: "N" | "S" | "E" | "W" | null = null;
+        if (petPosX <= minX) hitWall = "W";
+        if (petPosX >= maxX) hitWall = "E";
+        if (petPosY <= minY) hitWall = "N";
+        if (petPosY >= maxY) hitWall = "S";
+
+        if (idleTime > 10 && idleAnimation === null) {
+          if (hitWall) {
+            setSprite(`scratchWall${hitWall}`, Math.floor(frameCount / 4));
+          } else {
+            setSprite("alert", 0);
+          }
+        }
+
+        // 10s on initial load (67 frames @ 150ms), 5s on subsequent cycles (33 frames)
+        const idleThreshold = isInitialCycle ? 67 : 33;
+
+        if (idleTime > idleThreshold && idleAnimation === null) {
+          idleAnimation = Math.random() < 0.3 ? "scratch" : "sleeping";
+          idleAnimationFrame = 0;
+          if (idleAnimation === "sleeping") {
+            isSleeping = true;
+            isInitialCycle = false;
+            sleepStartTime = Date.now();
+            sleepDurationMs = (Math.floor(Math.random() * 60) + 60) * 1000;
+          }
+        }
+
+        if (idleAnimation) {
+          if (idleAnimation === "scratch") {
+            setSprite("scratch", Math.floor(idleAnimationFrame / 4));
+            idleAnimationFrame++;
+            if (idleAnimationFrame > 16) {
+              idleAnimation = "sleeping";
+              idleAnimationFrame = 0;
+              isSleeping = true;
+              isInitialCycle = false;
+              sleepStartTime = Date.now();
+              sleepDurationMs = (Math.floor(Math.random() * 60) + 60) * 1000;
+            }
+          }
+        } else if (idleTime <= 10) {
+          setSprite("idle", 0);
+        }
+      } else {
+        idleTime = 0;
+        resetIdleAnimation();
+
+        let direction = "";
+        if (diffY > 12) direction += "N";
+        else if (diffY < -12) direction += "S";
+
+        if (diffX > 12) direction += "W";
+        else if (diffX < -12) direction += "E";
+
+        const angle = Math.atan2(mousePosY - petPosY, mousePosX - petPosX);
+        petPosX += Math.cos(angle) * petSpeed;
+        petPosY += Math.sin(angle) * petSpeed;
+
+        const minX = 16;
+        const minY = 16;
+        const maxX = window.innerWidth - 16;
+        const maxY = window.innerHeight - 16;
+
+        petPosX = Math.max(minX, Math.min(maxX, petPosX));
+        petPosY = Math.max(minY, Math.min(maxY, petPosY));
+
+        if (direction !== "") {
+          setSprite(direction, Math.floor(frameCount / 4));
+        } else {
+          setSprite("idle", 0);
+        }
+      }
+
+      petEl.style.left = `${petPosX - 16}px`;
+      petEl.style.top = `${petPosY - 16}px`;
+    }
+
+    setInterval(frame, 150);
+  })();
+</script>

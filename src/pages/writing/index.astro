@@ -1,0 +1,135 @@
+---
+// @see https://docs.astro.build/en/basics/astro-pages/
+// @see https://docs.astro.build/en/guides/content-collections/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+
+import Layout from "@/layouts/layout.astro";
+import { getCollection } from "astro:content";
+import { formatDate } from "@/utils/date";
+
+const allPosts = await getCollection("blog");
+const sortedPosts = allPosts.sort(
+  (a, b) =>
+    new Date(b.data.publishedAt).getTime() -
+    new Date(a.data.publishedAt).getTime()
+);
+---
+
+<Layout
+  title="Writing"
+  description="Articles, notes, thoughts, and technical writing by Ajay Dandge."
+>
+  <section>
+    <h1 class="font-semibold text-2xl mb-2 tracking-tighter">Writing</h1>
+    <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
+      Things I've written, ideas I've explored, and thoughts I've put into words.
+    </p>
+
+    {/* Filter Buttons */}
+    <div class="flex flex-wrap items-center gap-3 text-sm mb-6 text-neutral-500 dark:text-neutral-400">
+      <button
+        type="button"
+        class="filter-tab transition-colors cursor-pointer text-neutral-900 dark:text-neutral-100 font-medium underline underline-offset-4"
+        data-filter="article"
+      >
+        Articles
+      </button>
+      <button
+        type="button"
+        class="filter-tab transition-colors cursor-pointer hover:text-neutral-800 dark:hover:text-neutral-200"
+        data-filter="note"
+      >
+        Notes
+      </button>
+      <button
+        type="button"
+        class="filter-tab transition-colors cursor-pointer hover:text-neutral-800 dark:hover:text-neutral-200"
+        data-filter="thought"
+      >
+        Thoughts
+      </button>
+    </div>
+
+    <hr class="mb-6 border-neutral-200 dark:border-neutral-800" />
+
+    {/* Post List */}
+    <ul class="divide-y divide-neutral-100 dark:divide-neutral-900" id="post-list">
+      {
+        sortedPosts.map((post) => {
+          const postType = post.data.type || "article";
+          const capitalizedType =
+            postType.charAt(0).toUpperCase() + postType.slice(1);
+
+          return (
+            <li class="post-item py-3" data-type={postType}>
+              <a href={`/blog/${post.id}`} class="group flex flex-col space-y-1">
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                  <h2 class="text-sm font-medium text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-4">
+                    {post.data.title}
+                  </h2>
+                  <span class="text-xs text-neutral-400 dark:text-neutral-500 tabular-nums shrink-0">
+                    {formatDate(post.data.publishedAt, false)}
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+                  <span>{capitalizedType}</span>
+                </div>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <p
+      id="empty-notice"
+      class="hidden text-sm text-neutral-500 dark:text-neutral-400 py-4"
+    >
+      Nothing here right now — still brewing or in drafts.
+    </p>
+  </section>
+</Layout>
+
+<script is:inline>
+  const filterTabs = document.querySelectorAll(".filter-tab");
+  const postItems = document.querySelectorAll(".post-item");
+  const emptyNotice = document.getElementById("empty-notice");
+
+  function applyFilter(filter) {
+    let visibleCount = 0;
+    postItems.forEach((item) => {
+      const itemType = item.getAttribute("data-type") || "article";
+      if (itemType === filter) {
+        item.style.display = "";
+        visibleCount++;
+      } else {
+        item.style.display = "none";
+      }
+    });
+
+    if (emptyNotice) {
+      emptyNotice.classList.toggle("hidden", visibleCount > 0);
+    }
+
+    filterTabs.forEach((tab) => {
+      const isActive = tab.getAttribute("data-filter") === filter;
+      if (isActive) {
+        tab.classList.add("text-neutral-900", "dark:text-neutral-100", "font-medium", "underline", "underline-offset-4");
+        tab.classList.remove("hover:text-neutral-800", "dark:hover:text-neutral-200");
+      } else {
+        tab.classList.remove("text-neutral-900", "dark:text-neutral-100", "font-medium", "underline", "underline-offset-4");
+        tab.classList.add("hover:text-neutral-800", "dark:hover:text-neutral-200");
+      }
+    });
+  }
+
+  filterTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const filter = tab.getAttribute("data-filter");
+      if (filter) applyFilter(filter);
+    });
+  });
+
+  // Default to articles
+  applyFilter("article");
+</script>

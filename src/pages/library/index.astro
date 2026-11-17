@@ -1,0 +1,124 @@
+---
+// @see https://docs.astro.build/en/basics/astro-pages/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+// @see https://lucide.dev/guide/packages/lucide-astro
+
+import Layout from "@/layouts/layout.astro";
+import { anime, books, songs, bookmarks } from "@/data/library";
+import { ArrowUpRight } from "lucide-astro";
+
+const tabs = [
+  { label: "Anime", value: "anime", items: anime },
+  { label: "Books", value: "books", items: books },
+  { label: "Music", value: "music", items: songs },
+  { label: "Bookmarks", value: "bookmarks", items: bookmarks },
+];
+---
+
+<Layout
+  title="Library"
+  description="Things I watch, read, and listen to — anime, books, music, and bookmarks."
+>
+  <section>
+    <h1 class="font-semibold text-2xl mb-2 tracking-tighter">Library</h1>
+    <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
+      Things I watch, read, and listen to — anime, books, music, and bookmarks.
+    </p>
+
+    {/* Tabs */}
+    <div class="flex items-center gap-4 text-sm mb-6 text-neutral-500 dark:text-neutral-400">
+      {
+        tabs.map((tab, idx) => (
+          <button
+            type="button"
+            class:list={[
+              "library-tab transition-colors cursor-pointer",
+              idx === 0
+                ? "text-neutral-900 dark:text-neutral-100 font-medium underline underline-offset-4"
+                : "hover:text-neutral-800 dark:hover:text-neutral-200",
+            ]}
+            data-tab={tab.value}
+          >
+            {tab.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <hr class="mb-6 border-neutral-200 dark:border-neutral-800" />
+
+    {/* Media Lists */}
+    {
+      tabs.map((tab, idx) => (
+        <ul
+          id={`tab-content-${tab.value}`}
+          class:list={[
+            "library-content divide-y divide-neutral-100 dark:divide-neutral-900",
+            idx !== 0 && "hidden",
+          ]}
+        >
+          {tab.items.map((item, index) => {
+            const subtitle =
+              "author" in item
+                ? item.author
+                : "artist" in item
+                ? item.artist
+                : "description" in item
+                ? item.description
+                : undefined;
+
+            return (
+              <li class="py-2.5 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3 min-w-0">
+                  <span class="text-xs text-neutral-400 dark:text-neutral-500 tabular-nums w-6 shrink-0 text-right select-none">
+                    {index + 1}.
+                  </span>
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group inline-flex items-center text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4 truncate text-sm"
+                  >
+                    <span class="truncate">{item.title}</span>
+                    <ArrowUpRight class="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors shrink-0" />
+                  </a>
+                </div>
+                {subtitle && (
+                  <span class="text-xs text-neutral-500 dark:text-neutral-400 tabular-nums shrink-0">
+                    {subtitle}
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      ))
+    }
+  </section>
+</Layout>
+
+<script is:inline>
+  const libraryTabs = document.querySelectorAll(".library-tab");
+  const libraryContents = document.querySelectorAll(".library-content");
+
+  libraryTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const activeTab = tab.getAttribute("data-tab");
+
+      libraryTabs.forEach((t) => {
+        const isActive = t === tab;
+        if (isActive) {
+          t.classList.add("text-neutral-900", "dark:text-neutral-100", "font-medium", "underline", "underline-offset-4");
+          t.classList.remove("hover:text-neutral-800", "dark:hover:text-neutral-200");
+        } else {
+          t.classList.remove("text-neutral-900", "dark:text-neutral-100", "font-medium", "underline", "underline-offset-4");
+          t.classList.add("hover:text-neutral-800", "dark:hover:text-neutral-200");
+        }
+      });
+
+      libraryContents.forEach((c) => {
+        c.classList.toggle("hidden", c.id !== `tab-content-${activeTab}`);
+      });
+    });
+  });
+</script>

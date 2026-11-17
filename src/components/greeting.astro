@@ -1,0 +1,22 @@
+---
+// @see https://docs.astro.build/en/basics/astro-components/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+---
+
+<span id="greeting-text">Hey</span>
+
+<script is:inline>
+  const greetingEl = document.getElementById("greeting-text");
+  if (greetingEl) {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) {
+      greetingEl.innerText = "Good morning";
+    } else if (hour >= 12 && hour < 17) {
+      greetingEl.innerText = "Good afternoon";
+    } else if (hour >= 17 && hour < 22) {
+      greetingEl.innerText = "Good evening";
+    } else {
+      greetingEl.innerText = "Good night";
+    }
+  }
+</script>

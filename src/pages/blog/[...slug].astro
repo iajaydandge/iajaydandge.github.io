@@ -1,0 +1,69 @@
+---
+// @see https://docs.astro.build/en/guides/content-collections/#rendering-body-content
+// @see https://docs.astro.build/en/basics/astro-pages/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/layout.astro";
+import { formatDate } from "@/utils/date";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const postType = post.data.type || "article";
+const capitalizedType = postType.charAt(0).toUpperCase() + postType.slice(1);
+const slug = post.id.replace(/\.mdx$/, "");
+const ogImage = `/og/${slug}.png`;
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.summary}
+  image={ogImage}
+>
+  <article>
+    <header class="mb-8">
+      <h1 class="title font-semibold text-2xl tracking-tighter text-neutral-900 dark:text-neutral-100 mb-2">
+        {post.data.title}
+      </h1>
+      <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+        <span class="tabular-nums">{formatDate(post.data.publishedAt, false)}</span>
+        <span>·</span>
+        <span>{capitalizedType}</span>
+      </div>
+    </header>
+
+    <div
+      class="text-neutral-800 dark:text-neutral-200 leading-relaxed
+      [&_h1]:text-2xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:mt-8 [&_h1]:mb-3 [&_h1]:text-neutral-900 dark:[&_h1]:text-neutral-100
+      [&_h2]:text-xl [&_h2]:font-medium [&_h2]:tracking-tight [&_h2]:mt-8 [&_h2]:mb-2 [&_h2]:text-neutral-900 dark:[&_h2]:text-neutral-100
+      [&_h3]:text-lg [&_h3]:font-medium [&_h3]:tracking-tight [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:text-neutral-900 dark:[&_h3]:text-neutral-100
+      [&_h4]:text-base [&_h4]:font-medium [&_h4]:tracking-tight [&_h4]:mt-6 [&_h4]:mb-2 [&_h4]:text-neutral-900 dark:[&_h4]:text-neutral-100
+      [&_p]:my-4 [&_p]:leading-relaxed
+      [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ul]:space-y-1
+      [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_ol]:space-y-1
+      [&_li]:pl-1
+      [&_blockquote]:border-l-2 [&_blockquote]:border-neutral-300 dark:[&_blockquote]:border-neutral-700 [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:italic [&_blockquote]:text-neutral-700 dark:[&_blockquote]:text-neutral-300
+      [&_hr]:my-8 [&_hr]:border-neutral-200 dark:[&_hr]:border-neutral-800
+      [&_a]:underline [&_a]:decoration-neutral-400 dark:[&_a]:decoration-neutral-600 [&_a]:underline-offset-2 [&_a]:decoration-[0.1em] hover:[&_a]:text-neutral-900 dark:hover:[&_a]:text-neutral-100 [&_a]:transition-colors
+      [&_pre]:rounded-lg [&_pre]:overflow-x-auto [&_pre]:border [&_pre]:border-neutral-200 dark:[&_pre]:border-neutral-800 [&_pre]:py-2.5 [&_pre]:px-3 [&_pre]:text-sm [&_pre]:my-4
+      [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-xs [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:rounded [&_:not(pre)>code]:bg-neutral-100 dark:[&_:not(pre)>code]:bg-neutral-800 [&_:not(pre)>code]:text-neutral-800 dark:[&_:not(pre)>code]:text-neutral-200 [&_:not(pre)>code]:border [&_:not(pre)>code]:border-neutral-200 dark:[&_:not(pre)>code]:border-neutral-700
+      [&_table]:w-full [&_table]:border-separate [&_table]:border-spacing-0 [&_table]:text-sm [&_table]:my-6 [&_table]:border [&_table]:border-neutral-200 dark:[&_table]:border-neutral-800 [&_table]:rounded-lg [&_table]:overflow-hidden
+      [&_thead]:bg-neutral-100 dark:[&_thead]:bg-neutral-900
+      [&_th]:px-4 [&_th]:py-2.5 [&_th]:text-left [&_th]:font-semibold [&_th]:text-neutral-900 dark:[&_th]:text-neutral-100 [&_th]:border-b [&_th]:border-r last:[&_th]:border-r-0 [&_th]:border-neutral-200 dark:[&_th]:border-neutral-800
+      [&_tr]:even:bg-neutral-50/50 dark:[&_tr]:even:bg-neutral-900/30
+      [&_tbody_tr:not(:first-child)_td]:border-t [&_tbody_tr:not(:first-child)_td]:border-neutral-200 dark:[&_tbody_tr:not(:first-child)_td]:border-neutral-800
+      [&_td]:px-4 [&_td]:py-2 [&_td]:text-neutral-700 dark:[&_td]:text-neutral-300 [&_td]:border-r last:[&_td]:border-r-0 [&_td]:border-neutral-200 dark:[&_td]:border-neutral-800"
+    >
+      <Content />
+    </div>
+  </article>
+</Layout>

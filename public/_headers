@@ -1,0 +1,23 @@
+# @see https://developers.cloudflare.com/pages/configuration/headers/
+# @see https://tools.ietf.org/html/rfc8288
+# @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+
+/*
+  Link: </llms.txt>; rel="describedby"
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Vary: Accept
+  Link: </llms.txt>; rel="describedby"
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8

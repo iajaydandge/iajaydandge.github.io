@@ -1,0 +1,92 @@
+---
+// @see https://docs.astro.build/en/basics/astro-pages/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+
+import Layout from "@/layouts/layout.astro";
+import { formatDate } from "@/utils/date";
+---
+
+<Layout
+  title="Privacy Policy"
+  description="Privacy policy for ajaydandge.dev — personal website, analytics disclosure, cookies, and data practices."
+>
+  <section>
+    <h1 class="font-semibold text-2xl tracking-tighter">
+      Privacy Policy
+    </h1>
+
+    <div class="flex items-center justify-between mt-2 mb-8 text-xs text-neutral-500 dark:text-neutral-400">
+      <div class="flex items-center gap-2">
+        <span>{formatDate("2026-11-16")}</span>
+      </div>
+    </div>
+
+    <div class="space-y-4 text-neutral-800 dark:text-neutral-200 text-sm leading-relaxed">
+      <p>
+        This is the website and engineering blog of Ajay Dandge (<span class="font-mono text-xs">ajaydandge.dev</span>). I believe in a quiet, respectful web. This site does not harvest personal data, monetize user behavior, or deploy invasive third-party advertising trackers.
+      </p>
+      <p>
+        This privacy policy describes what minimal information is collected when you visit this site, how it is used, and how your privacy is safeguarded.
+      </p>
+    </div>
+
+    <hr class="my-8 border-neutral-200 dark:border-neutral-800" />
+
+    <div class="space-y-8 text-sm text-neutral-800 dark:text-neutral-200">
+      <div>
+        <h2 class="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+          1. Analytics & Metrics
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-2">
+          This site uses Google Analytics (via Google Tag Manager script) to understand aggregated, high-level traffic patterns, such as overall pageviews, popular articles, and general referral sources.
+        </p>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          The analytics configuration does not collect personally identifiable information (PII), form submissions, financial records, or exact geolocation data. IP addresses are anonymized according to standard industry practices. This aggregated information is used solely to understand which articles resonate with readers and to guide future writing.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+          2. Cookies & Local Storage
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-2">
+          This site does not use cookies for cross-site profiling, retargeting, or advertising networks.
+        </p>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          Client-side browser storage (<code class="font-mono text-xs">localStorage</code>) is strictly utilized for functional, client-side preferences:
+        </p>
+        <ul class="list-disc list-inside mt-2 space-y-1 text-neutral-600 dark:text-neutral-400">
+          <li>Remembering your chosen appearance theme (light mode, dark mode, or system default).</li>
+          <li>Remembering client-side preferences for the interactive retro cursor pet.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+          3. Direct Communications
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          If you send an email to <a href="mailto:contact@ajaydandge.dev" class="text-neutral-900 dark:text-neutral-100 underline underline-offset-4">contact@ajaydandge.dev</a>, your email address and any messages you include will be used exclusively to converse with you. Your correspondence is never sold, rented, or added to marketing lists.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+          4. Machine & AI Agent Access
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          This site explicitly facilitates automated research and AI agent traversal by exposing machine-readable routes (including <a href="/llms.txt" class="font-mono text-xs text-neutral-900 dark:text-neutral-100 underline underline-offset-4">llms.txt</a> and paired <code class="font-mono text-xs">.md</code> endpoints). Automated crawlers and agents are requested to respect standard robots.txt directives and avoid aggressive scraping rates.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+          5. Contact Regarding Privacy
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          If you have questions about this privacy statement or wish to request the deletion of any direct correspondence, please email <a href="mailto:contact@ajaydandge.dev" class="text-neutral-900 dark:text-neutral-100 underline underline-offset-4">contact@ajaydandge.dev</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

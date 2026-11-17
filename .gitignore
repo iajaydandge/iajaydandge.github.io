@@ -20,6 +20,11 @@
 *.pem
 .vscode
 
+# astro & cloudflare
+.astro/
+dist/
+.wrangler/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

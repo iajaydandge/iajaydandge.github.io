@@ -1,0 +1,49 @@
+/* @see https://docs.astro.build/en/guides/styling/#tailwind-css */
+/* @see https://fontsource.org/fonts/geist-sans */
+/* @see https://fontsource.org/fonts/geist-mono */
+
+@import "@fontsource/geist-sans";
+@import "@fontsource/geist-mono";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Geist Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", monospace;
+}
+
+:root {
+  --background: #faf9f5;
+  --foreground: #161616;
+  color-scheme: light;
+}
+
+.dark {
+  --background: #18181a;
+  --foreground: #ededed;
+  color-scheme: dark;
+}
+
+::selection {
+  background-color: #47a3f3;
+  color: #fefefe;
+}
+
+html {
+  min-width: 360px;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* @see https://docs.astro.build/en/guides/markdown-content/#dual-themes */
+html.dark .astro-code,
+html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}

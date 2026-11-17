@@ -1,0 +1,214 @@
+---
+// @see https://docs.astro.build/en/basics/astro-pages/
+// @see https://docs.astro.build/en/guides/content-collections/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+// @see https://lucide.dev/guide/packages/lucide-astro
+
+import Layout from "@/layouts/layout.astro";
+import Greeting from "@/components/greeting.astro";
+import { getCollection } from "astro:content";
+import { formatDate } from "@/utils/date";
+import { ArrowUpRight } from "lucide-astro";
+
+const siteUrl = Astro.site ? Astro.site.origin : Astro.url.origin;
+const allPosts = await getCollection("blog");
+
+// Filter strictly for articles so notes remain in the Notes section
+const recentPosts = allPosts
+  .filter((post) => (post.data.type || "article") === "article")
+  .sort(
+    (a, b) =>
+      new Date(b.data.publishedAt).getTime() -
+      new Date(a.data.publishedAt).getTime()
+  )
+  .slice(0, 4);
+
+function getReadingTime(body: string = ""): string {
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.ceil(words / 200))} min read`;
+}
+
+const featuredProjects = [
+  {
+    name: "Contests",
+    href: "https://contests.ajaydandge.dev/",
+    description: "Track upcoming competitive programming contests",
+  },
+  {
+    name: "CodeRun",
+    href: "https://coderun.ajaydandge.dev/",
+    description: "Online code runner to write, run, and test code",
+  },
+  {
+    name: "Burrow",
+    href: "https://burrow.ajaydandge.dev/",
+    description:
+      "CLI to query PostgreSQL and MySQL databases directly or via SSH tunnel",
+  },
+  {
+    name: "Claude Usage Plugin",
+    href: "https://github.com/iajaydandge/claude-usage-plugin",
+    description: "Per-user token, cost, and session tracking in Claude Code",
+  },
+  {
+    name: "Password",
+    href: "https://password.ajaydandge.dev/",
+    description: "Local-first password manager",
+  },
+  {
+    name: "Mazes",
+    href: "https://mazes.ajaydandge.dev/",
+    description: "Maze generation and pathfinding algorithms",
+  },
+];
+---
+
+<Layout title="Ajay Dandge">
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: "Ajay Dandge",
+      url: siteUrl,
+      jobTitle: "Software Engineer",
+      description:
+        "Personal corner of Ajay Dandge. Software engineer building web apps, CLI tools, and exploring ideas.",
+      sameAs: [
+        "https://github.com/iajaydandge",
+        "https://x.com/iajaydandge",
+        "https://linkedin.com/in/ajaydandge",
+      ],
+    })}
+  />
+
+  {/* Intro */}
+  <div class="space-y-4">
+    <h1 class="text-2xl font-semibold tracking-tighter text-neutral-900 dark:text-neutral-100">
+      <Greeting />.
+    </h1>
+    <p class="text-neutral-600 dark:text-neutral-400">
+      I'm Ajay — developer, occasional writer, curious human.
+    </p>
+    <p class="text-neutral-800 dark:text-neutral-200">
+      I build software, explore ideas, write things down, and occasionally
+      get distracted by something completely unrelated.
+    </p>
+    <p class="text-neutral-800 dark:text-neutral-200">
+      This is my personal space on the web for things I'm building,
+      exploring, and learning.
+    </p>
+  </div>
+
+  <hr class="my-8 border-neutral-200 dark:border-neutral-800" />
+
+  {/* Recently Written */}
+  <div class="mb-8">
+    <div class="flex justify-between items-baseline mb-4">
+      <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+        Recently written
+      </h2>
+      <a
+        href="/writing"
+        class="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
+      >
+        All writing →
+      </a>
+    </div>
+
+    <ul class="divide-y divide-neutral-100 dark:divide-neutral-900">
+      {
+        recentPosts.map((post) => {
+          const postType = post.data.type || "article";
+          const capitalizedType =
+            postType.charAt(0).toUpperCase() + postType.slice(1);
+          const readingTime = getReadingTime(post.body);
+
+          return (
+            <li class="py-3">
+              <a href={`/blog/${post.id}`} class="group flex flex-col space-y-1">
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                  <h3 class="text-sm font-medium text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-4">
+                    {post.data.title}
+                  </h3>
+                  <span class="text-xs text-neutral-400 dark:text-neutral-500 tabular-nums shrink-0">
+                    {formatDate(post.data.publishedAt, false)}
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+                  <span>{capitalizedType}</span>
+                  {readingTime && (
+                    <>
+                      <span>·</span>
+                      <span>{readingTime}</span>
+                    </>
+                  )}
+                </div>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+
+  <hr class="my-8 border-neutral-200 dark:border-neutral-800" />
+
+  {/* A Few Things I've Made */}
+  <div class="mb-8">
+    <div class="flex justify-between items-baseline mb-3">
+      <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+        A few things I've made
+      </h2>
+      <a
+        href="/about"
+        class="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
+      >
+        More on /about →
+      </a>
+    </div>
+
+    <ul class="space-y-2 text-sm">
+      {
+        featuredProjects.map((project) => (
+          <li>
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex items-center hover:underline underline-offset-4 text-neutral-900 dark:text-neutral-100"
+            >
+              <span>{project.name}</span>
+              <ArrowUpRight class="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
+            </a>
+            <span class="text-neutral-500 dark:text-neutral-400">
+              {" "}— {project.description}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <hr class="my-8 border-neutral-200 dark:border-neutral-800" />
+
+  {/* Library */}
+  <div class="mb-8">
+    <div class="flex justify-between items-baseline mb-3">
+      <h2 class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+        Library
+      </h2>
+      <a
+        href="/library"
+        class="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 underline underline-offset-4"
+      >
+        Explore library →
+      </a>
+    </div>
+    <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+      Things I watch, read, and listen to — a curated collection of anime,
+      books, music, and bookmarks I return to.
+    </p>
+  </div>
+</Layout>

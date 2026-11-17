@@ -1,0 +1,36 @@
+---
+// @see https://docs.astro.build/en/basics/astro-components/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+// @see https://lucide.dev/guide/packages/lucide-astro
+
+import { ArrowUpRight } from "lucide-astro";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-16 mb-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+  <p>© {currentYear} MIT Licensed</p>
+  <div class="flex items-center gap-4">
+    <a
+      href="/llms.txt"
+      class="hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100 font-mono"
+    >
+      llms.txt
+    </a>
+    <a
+      href="/contact"
+      class="hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
+    >
+      contact
+    </a>
+    <a
+      href="/rss.xml"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="group inline-flex items-center hover:underline underline-offset-4 hover:text-neutral-900 dark:hover:text-neutral-100"
+    >
+      <span>rss</span>
+      <ArrowUpRight class="w-3 h-3 ml-0.5 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors shrink-0" />
+    </a>
+  </div>
+</footer>

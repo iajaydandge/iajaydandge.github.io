@@ -1,0 +1,94 @@
+---
+// @see https://docs.astro.build/en/basics/astro-pages/
+// @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
+
+import Layout from "@/layouts/layout.astro";
+import { ArrowUpRight, Mail, Github, Twitter, Linkedin } from "lucide-astro";
+---
+
+<Layout
+  title="Contact"
+  description="How to get in touch with Ajay Dandge — email, links, and communication preferences."
+>
+  <section>
+    <h1 class="font-semibold text-2xl mb-4 tracking-tighter">Contact</h1>
+
+    <p class="text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed mb-6">
+      The best way to reach me is by email. Feel free to reach out about software engineering, AI, projects, or feedback on anything I've written.
+    </p>
+
+    <ul class="space-y-3 text-sm mb-8">
+      <li class="flex items-center gap-3">
+        <span class="text-neutral-500 dark:text-neutral-400 w-24">Email</span>
+        <a
+          href="mailto:contact@ajaydandge.dev"
+          class="inline-flex items-center gap-1.5 text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4"
+        >
+          <Mail class="w-3.5 h-3.5 text-neutral-500" />
+          <span>contact@ajaydandge.dev</span>
+        </a>
+      </li>
+      <li class="flex items-center gap-3">
+        <span class="text-neutral-500 dark:text-neutral-400 w-24">GitHub</span>
+        <a
+          href="https://github.com/iajaydandge"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-1.5 text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4"
+        >
+          <Github class="w-3.5 h-3.5 text-neutral-500" />
+          <span>github.com/iajaydandge</span>
+          <ArrowUpRight class="w-3 h-3 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
+        </a>
+      </li>
+      <li class="flex items-center gap-3">
+        <span class="text-neutral-500 dark:text-neutral-400 w-24">X</span>
+        <a
+          href="https://x.com/iajaydandge"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-1.5 text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4"
+        >
+          <Twitter class="w-3.5 h-3.5 text-neutral-500" />
+          <span>x.com/iajaydandge</span>
+          <ArrowUpRight class="w-3 h-3 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
+        </a>
+      </li>
+      <li class="flex items-center gap-3">
+        <span class="text-neutral-500 dark:text-neutral-400 w-24">LinkedIn</span>
+        <a
+          href="https://linkedin.com/in/ajaydandge"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-1.5 text-neutral-900 dark:text-neutral-100 hover:underline underline-offset-4"
+        >
+          <Linkedin class="w-3.5 h-3.5 text-neutral-500" />
+          <span>linkedin.com/in/ajaydandge</span>
+          <ArrowUpRight class="w-3 h-3 text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors" />
+        </a>
+      </li>
+    </ul>
+
+    <hr class="my-8 border-neutral-200 dark:border-neutral-800" />
+
+    <div class="space-y-6 text-sm text-neutral-800 dark:text-neutral-200">
+      <div>
+        <h2 class="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+          Time Zone & Availability
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          I am based in India (India Standard Time, UTC+05:30). I generally work and respond asynchronously across time zones.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-base font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+          Security & Responsible Disclosure
+        </h2>
+        <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+          If you discover a security vulnerability or bug in any of my open-source projects or services, please report it privately by emailing <a href="mailto:contact@ajaydandge.dev" class="text-neutral-900 dark:text-neutral-100 underline underline-offset-4">contact@ajaydandge.dev</a> with reproduction steps.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
