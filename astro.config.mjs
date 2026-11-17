@@ -8,7 +8,7 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
 
-const site = process.env.CF_PAGES_URL || process.env.SITE_URL || "https://ajaydandge.dev";
+const site = process.env.SITE_URL || "https://ajaydandge.dev";
 
 export default defineConfig({
   site,

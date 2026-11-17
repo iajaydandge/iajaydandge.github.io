@@ -12,6 +12,7 @@ Building software, exploring ideas, writing, and curating things of interest. De
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Typography**: Geist Sans & Geist Mono (`@fontsource/geist-sans`, `@fontsource/geist-mono`)
 - **Icons**: [Lucide Astro](https://lucide.dev/)
+- **Analytics**: Google Analytics 4 (`G-3V3L4N4VS7`)
 - **Syntax Highlighting**: Shiki (`github-light` / `github-dark`)
 
 ## AI-Agent Readiness (100/100)

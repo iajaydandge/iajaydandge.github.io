@@ -11,6 +11,7 @@ Engineering blog and digital corner of Ajay Dandge.
 - **Styling**: Tailwind CSS v4 (`@tailwindcss/vite`) with system dark/light mode
 - **Typography**: `@fontsource/geist-sans`, `@fontsource/geist-mono`
 - **Icons**: `lucide-astro`
+- **Analytics**: Google Analytics 4 (`G-3V3L4N4VS7`)
 - **Blog Engine**: Local MDX posts (`src/content/blog/*.mdx`) managed via Astro Content Layer (`src/content.config.ts`)
 
 ## Commands
@@ -67,3 +68,5 @@ Engineering blog and digital corner of Ajay Dandge.
    - Automated build-time generation via `src/pages/og/[...slug].png.ts` (1200x630 PNG format).
    - Generates `/og/home.png` for homepage and `/og/[slug].png` for all blog posts.
    - Powered by Astro's built-in `sharp` library converting vector SVG templates to PNG directly at build time with zero external dependencies.
+9. **Analytics Strategy**:
+   - Google Analytics 4 (`G-3V3L4N4VS7`) is integrated inline in `src/layouts/layout.astro` for client-side audience insights and page view metrics.
