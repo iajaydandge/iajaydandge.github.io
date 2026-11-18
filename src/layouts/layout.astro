@@ -11,18 +11,20 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  keywords?: string;
 }
 
 const {
-  title = "Ajay Dandge",
+  title = "Ajay Dandge — Software & AI Engineer",
   description = "Personal corner of the internet. Building software, exploring ideas, writing, and keeping what's interesting.",
   image = "/og/home.png",
+  keywords = "Ajay Dandge, Software Engineer, AI Engineer, Developer Tools, Burrow CLI, Engineering Blog",
 } = Astro.props;
 
 const siteUrl = Astro.site || Astro.url.origin;
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
-const pageTitle = title === "Ajay Dandge" ? title : `${title} — Ajay Dandge`;
+const pageTitle = title.includes("Ajay Dandge") ? title : `${title} — Ajay Dandge`;
 ---
 
 <!doctype html>
@@ -37,6 +39,8 @@ const pageTitle = title === "Ajay Dandge" ? title : `${title} — Ajay Dandge`;
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="is-agentic-site-type" content="documentation" />
 
     <!-- Open Graph -->
     <meta property="og:title" content={pageTitle} />
