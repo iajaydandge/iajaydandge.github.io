@@ -22,13 +22,51 @@ const postType = post.data.type || "article";
 const capitalizedType = postType.charAt(0).toUpperCase() + postType.slice(1);
 const slug = post.id.replace(/\.mdx$/, "");
 const ogImage = `/og/${slug}.png`;
+const siteUrl = Astro.site || Astro.url.origin;
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const ogImageURL = new URL(ogImage, siteUrl);
+const isoPublishedAt = new Date(post.data.publishedAt).toISOString();
+const isoModifiedAt = new Date(post.data.updatedAt || post.data.publishedAt).toISOString();
 ---
 
 <Layout
   title={post.data.title}
   description={post.data.summary}
   image={ogImage}
+  article={{
+    publishedTime: isoPublishedAt,
+    modifiedTime: isoModifiedAt,
+    author: "Ajay Dandge",
+  }}
 >
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.data.title,
+      description: post.data.summary,
+      datePublished: isoPublishedAt,
+      dateModified: isoModifiedAt,
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalURL.toString(),
+      },
+      url: canonicalURL.toString(),
+      image: ogImageURL.toString(),
+      author: {
+        "@type": "Person",
+        name: "Ajay Dandge",
+        url: siteUrl.toString(),
+      },
+      publisher: {
+        "@type": "Person",
+        name: "Ajay Dandge",
+        url: siteUrl.toString(),
+      },
+    })}
+  />
   <article>
     <header class="mb-8">
       <h1 class="title font-semibold text-2xl tracking-tighter text-neutral-900 dark:text-neutral-100 mb-2">
@@ -36,6 +74,12 @@ const ogImage = `/og/${slug}.png`;
       </h1>
       <div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
         <span class="tabular-nums">{formatDate(post.data.publishedAt, false)}</span>
+        {post.data.updatedAt && (
+          <>
+            <span>·</span>
+            <span class="tabular-nums">Updated {formatDate(post.data.updatedAt, false)}</span>
+          </>
+        )}
         <span>·</span>
         <span>{capitalizedType}</span>
       </div>

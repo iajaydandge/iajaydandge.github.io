@@ -19,10 +19,18 @@ export async function GET({ props }: { props: { post: CollectionEntry<"blog"> } 
   const postType = post.data.type || "article";
   const capitalizedType = postType.charAt(0).toUpperCase() + postType.slice(1);
 
+  const dateLine = [
+    formatDate(post.data.publishedAt, false),
+    post.data.updatedAt ? `Updated ${formatDate(post.data.updatedAt, false)}` : null,
+    capitalizedType,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   const content = [
     `# ${post.data.title}`,
     ``,
-    `${formatDate(post.data.publishedAt, false)} · ${capitalizedType}`,
+    dateLine,
     ``,
     post.body,
     ``,

@@ -36,7 +36,7 @@ export async function GET(context: APIContext) {
     })),
     ...posts.flatMap((post) => {
       const slug = post.id.replace(/\.mdx$/, "");
-      const lastmod = new Date(post.data.publishedAt).toISOString().split("T")[0];
+      const lastmod = new Date(post.data.updatedAt || post.data.publishedAt).toISOString().split("T")[0];
       return [
         { loc: `${siteUrl}/blog/${slug}`, lastmod },
         { loc: `${siteUrl}/blog/${slug}.md`, lastmod },

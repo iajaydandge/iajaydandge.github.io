@@ -19,7 +19,7 @@ export async function GET() {
     `- [Burrow](https://burrow.ajaydandge.dev/) — CLI to query PostgreSQL and MySQL databases directly or via SSH tunnel`,
     `- [Password](https://password.ajaydandge.dev/) — Local-first password manager`,
     `- [Claude Usage Plugin](https://github.com/iajaydandge/claude-usage-plugin) — Per-user token, cost, and session tracking in Claude Code`,
-    `- [Slate](https://ajaydandge.dev/slate/) — Minimalist canvas tool`,
+    `- [Slate](https://slate.ajaydandge.dev/) — Minimalist canvas tool`,
     `- [CLI Wordle](https://pypi.org/project/cli-wordle/) — Wordle clone in the terminal on PyPI`,
     ``,
     `### Experiments`,

@@ -12,6 +12,11 @@ interface Props {
   description?: string;
   image?: string;
   keywords?: string;
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    author?: string;
+  };
 }
 
 const {
@@ -19,6 +24,7 @@ const {
   description = "Personal corner of the internet. Building software, exploring ideas, writing, and keeping what's interesting.",
   image = "/og/home.png",
   keywords = "Ajay Dandge, Software Engineer, AI Engineer, Developer Tools, Burrow CLI, Engineering Blog",
+  article,
 } = Astro.props;
 
 const siteUrl = Astro.site || Astro.url.origin;
@@ -47,8 +53,15 @@ const pageTitle = title.includes("Ajay Dandge") ? title : `${title} — Ajay Dan
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:site_name" content="Ajay Dandge" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={article ? "article" : "website"} />
     <meta property="og:image" content={ogImageURL} />
+    {article && (
+      <>
+        <meta property="article:published_time" content={article.publishedTime} />
+        <meta property="article:modified_time" content={article.modifiedTime || article.publishedTime} />
+        <meta property="article:author" content={article.author || "Ajay Dandge"} />
+      </>
+    )}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
