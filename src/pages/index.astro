@@ -13,6 +13,21 @@ import { ArrowUpRight } from "lucide-astro";
 const siteUrl = Astro.site ? Astro.site.origin : Astro.url.origin;
 const allPosts = await getCollection("blog");
 
+const sortedByDate = allPosts.slice().sort(
+  (a, b) =>
+    new Date(b.data.updatedAt || b.data.publishedAt).getTime() -
+    new Date(a.data.updatedAt || a.data.publishedAt).getTime()
+);
+const latestPost = sortedByDate[0];
+const oldestPost = sortedByDate[sortedByDate.length - 1];
+
+const isoLatestDate = latestPost
+  ? new Date(latestPost.data.updatedAt || latestPost.data.publishedAt).toISOString()
+  : new Date().toISOString();
+const isoOldestDate = oldestPost
+  ? new Date(oldestPost.data.publishedAt).toISOString()
+  : "2025-05-05T00:00:00.000Z";
+
 // Filter strictly for articles so notes remain in the Notes section
 const recentPosts = allPosts
   .filter((post) => (post.data.type || "article") === "article")
@@ -63,32 +78,66 @@ const featuredProjects = [
 ];
 ---
 
-<Layout title="Ajay Dandge — Software & AI Engineer">
+<Layout
+  title="Ajay Dandge — Software & AI Engineer"
+  dateModified={isoLatestDate}
+>
   <script
     type="application/ld+json"
     is:inline
     set:html={JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "Person",
-      name: "Ajay Dandge",
-      url: siteUrl,
-      jobTitle: "Software & AI Engineer",
-      description:
-        "Personal corner of Ajay Dandge. Software engineer building web apps, CLI tools, and exploring ideas.",
-      knowsAbout: [
-        "Software Engineering",
-        "Artificial Intelligence",
-        "Developer Tools",
-        "Burrow CLI",
-        "Web Applications",
-        "Database Systems",
-      ],
-      keywords:
-        "Ajay Dandge, Software & AI Engineer, Developer Tools, Burrow CLI, Engineering Blog",
-      sameAs: [
-        "https://github.com/iajaydandge",
-        "https://x.com/iajaydandge",
-        "https://linkedin.com/in/ajaydandge",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": `${siteUrl}/#website`,
+          name: "Ajay Dandge",
+          url: siteUrl,
+          description:
+            "Personal corner and engineering blog of Ajay Dandge. Building software, exploring ideas, and writing things down.",
+          datePublished: isoOldestDate,
+          dateModified: isoLatestDate,
+          publisher: {
+            "@id": `${siteUrl}/#person`,
+          },
+        },
+        {
+          "@type": "WebPage",
+          "@id": `${siteUrl}/#webpage`,
+          url: siteUrl,
+          name: "Ajay Dandge — Software & AI Engineer",
+          description:
+            "Personal corner of Ajay Dandge. Software engineer building web apps, CLI tools, and exploring ideas.",
+          datePublished: isoOldestDate,
+          dateModified: isoLatestDate,
+          about: {
+            "@id": `${siteUrl}/#person`,
+          },
+        },
+        {
+          "@type": "Person",
+          "@id": `${siteUrl}/#person`,
+          name: "Ajay Dandge",
+          url: siteUrl,
+          jobTitle: "Software & AI Engineer",
+          description:
+            "Personal corner of Ajay Dandge. Software engineer building web apps, CLI tools, and exploring ideas.",
+          knowsAbout: [
+            "Software Engineering",
+            "Artificial Intelligence",
+            "Developer Tools",
+            "Burrow CLI",
+            "Web Applications",
+            "Database Systems",
+          ],
+          keywords:
+            "Ajay Dandge, Software & AI Engineer, Developer Tools, Burrow CLI, Engineering Blog",
+          sameAs: [
+            "https://github.com/iajaydandge",
+            "https://x.com/iajaydandge",
+            "https://linkedin.com/in/ajaydandge",
+          ],
+        },
       ],
     })}
   />

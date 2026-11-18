@@ -25,6 +25,7 @@ export async function GET(context: APIContext) {
     `# Ajay Dandge — Full Site Overview & Context Archive`,
     ``,
     `> Personal corner and engineering blog of Ajay Dandge. Building software, exploring ideas, and writing things down.`,
+    `> As of November 2026.`,
     ``,
     `Website: ${siteUrl}`,
     ``,

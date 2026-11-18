@@ -17,6 +17,7 @@ export async function GET() {
     `# Ajay Dandge`,
     ``,
     `> Personal corner and engineering blog of Ajay Dandge. Building software, exploring ideas, and writing things down.`,
+    `> As of November 2026.`,
     ``,
     `I'm Ajay — developer, occasional writer, curious human.`,
     ``,
