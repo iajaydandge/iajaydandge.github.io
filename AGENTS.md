@@ -74,3 +74,17 @@ Engineering blog and digital corner of Ajay Dandge.
    - Powered by Astro's built-in `sharp` library converting vector SVG templates to PNG directly at build time with zero external dependencies.
 9. **Analytics Strategy**:
    - Google Analytics 4 (`G-3V3L4N4VS7`) is integrated inline in `src/layouts/layout.astro` for client-side audience insights and page view metrics.
+10. **Theme-Adaptive Diagrams & Images**:
+    - **Dynamic Theme Switching**: Paired `<img>` elements using Tailwind CSS display classes:
+      ```html
+      <img src="/images/...-light.png" alt="..." class="block dark:hidden w-full rounded-lg border border-neutral-200 dark:border-neutral-800" />
+      <img src="/images/...-dark.png" alt="..." class="hidden dark:block w-full rounded-lg border border-neutral-200 dark:border-neutral-800" />
+      ```
+      Never use `<picture media="(prefers-color-scheme: ...)">` for theme-adaptive images, because CSS media queries only detect OS settings and fail to respond when the user clicks the site's theme toggle button (`document.documentElement.classList.toggle("dark")`).
+    - **Diagram Generation & Typography**:
+      - Diagrams must be rendered as crisp, high-resolution PNGs at 2.5x retina scale (e.g., via headless Chromium/Edge with `--force-device-scale-factor=2.5`).
+      - Strictly follow the site's typography: `Geist` (`@fontsource/geist-sans`) for titles, labels, and descriptions; `Geist Mono` (`@fontsource/geist-mono`) strictly reserved for code literals, endpoints, and identifiers (e.g. `_index._agents`, `Accept: text/markdown`, `.md`).
+      - Maintain exact UI monochrome palettes:
+        - Dark: background `#0a0a0a`, card fill `#171717` (`neutral-900`), border `#262626` (`neutral-800`), primary text `#f5f5f5` (`neutral-100`), secondary text `#a3a3a3` (`neutral-400`).
+        - Light: background `#fafafa` (`neutral-50`), card fill `#ffffff`, border `#e5e5e5` (`neutral-200`), primary text `#171717` (`neutral-900`), secondary text `#737373` (`neutral-500`).
+      - Box and connector geometry: Cards use `width: fit-content` with compact padding around text rather than stretched boxes, and hierarchical flows must use mathematically centered branching trees (vertical stem, balanced horizontal bar, and parallel drop arrows aligned to card centers).

@@ -12,11 +12,16 @@ An afternoon project is a great way to find out what the afternoon left out. Thi
 
 Here's the dashboard everyone lands on after signing in — totals across the team, a daily activity heatmap, the token and cost trend, and a per-user breakdown you can drill into by session or by account. The numbers below are from a demo dataset, not my team's actual spend.
 
-<picture>
-  <source srcSet="/images/claude-usage-dashboard-dark.png" media="(prefers-color-scheme: dark)" />
-  <source srcSet="/images/claude-usage-dashboard-light.png" media="(prefers-color-scheme: light)" />
-  <img src="/images/claude-usage-dashboard-light.png" alt="Claude Usage dashboard — team totals, activity heatmap, token and cost trend, and per-user summary" className="rounded-lg border border-neutral-200 dark:border-neutral-800" />
-</picture>
+<img
+  src="/images/claude-usage-dashboard-light.png"
+  alt="Claude Usage dashboard — team totals, activity heatmap, token and cost trend, and per-user summary"
+  class="block dark:hidden w-full rounded-lg border border-neutral-200 dark:border-neutral-800"
+/>
+<img
+  src="/images/claude-usage-dashboard-dark.png"
+  alt="Claude Usage dashboard — team totals, activity heatmap, token and cost trend, and per-user summary"
+  class="hidden dark:block w-full rounded-lg border border-neutral-200 dark:border-neutral-800"
+/>
 
 It follows your system theme, so the screenshot above is dark if you're reading this in dark mode.
 

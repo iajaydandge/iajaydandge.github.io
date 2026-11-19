@@ -61,22 +61,16 @@ For content sites, agent-ready architecture rests on four fundamental layers:
 
 Building an agent-ready content site involves coordinating DNS resolution, edge routing, and build-time static generation.
 
-```text
-┌────────────────────────────────────────────────────────┐
-│                   DNS Layer (DNS-AID)                  │
-│      _index._agents HTTPS record with ALPN & DNSSEC    │
-└───────────────────────────┬────────────────────────────┘
-                            │
-┌───────────────────────────▼────────────────────────────┐
-│                    Edge Middleware                     │
-│    Inspects 'Accept: text/markdown' & RFC 8288 Links   │
-└─────────────┬────────────────────────────┬─────────────┘
-              │                            │
-┌─────────────▼──────────────┐ ┌───────────▼─────────────┐
-│       HTML Endpoints       │ │   Paired .md Endpoints  │
-│  (For Human Readers / UI)  │ │   (For Visiting Agents) │
-└────────────────────────────┘ └─────────────────────────┘
-```
+<img
+  src="/images/agent-ready-architecture-light.png"
+  alt="The Architecture of an Agent-Ready Content Site"
+  class="block dark:hidden w-full rounded-lg border border-neutral-200 dark:border-neutral-800"
+/>
+<img
+  src="/images/agent-ready-architecture-dark.png"
+  alt="The Architecture of an Agent-Ready Content Site"
+  class="hidden dark:block w-full rounded-lg border border-neutral-200 dark:border-neutral-800"
+/>
 
 ### 1. 1:1 Markdown Route Pairing
 
@@ -104,85 +98,14 @@ Host: ajaydandge.dev
 Accept: text/markdown
 ```
 
-At the edge (via Cloudflare Pages middleware in `functions/_middleware.ts`), the incoming request is resolved before static assets are returned:
+At the edge, incoming requests are resolved before static assets are returned. While the exact setup varies across hosting platforms, on Cloudflare Pages this is handled by a simple middleware function:
 
 ```typescript
-export const onRequest: PagesFunction = async (context) => {
-  const { request, next } = context;
-  const url = new URL(request.url);
-  const acceptHeader = request.headers.get("Accept") || "";
-
-  // Check whether the client explicitly accepts Markdown.
-  const acceptsMarkdown = acceptHeader
-    .split(",")
-    .some((item) => {
-      const [type, ...params] = item.trim().split(";");
-      const quality = params.find((param) => param.trim().startsWith("q="));
-      return (
-        type.trim() === "text/markdown" &&
-        (!quality || Number(quality.split("=")[1]) > 0)
-      );
-    });
-
-  const isMarkdownPath = url.pathname.endsWith(".md");
-
-  // Rewrite Markdown requests to the corresponding static file.
-  if (acceptsMarkdown && !isMarkdownPath) {
-    const mdPath =
-      url.pathname === "/"
-        ? "/index.md"
-        : `${url.pathname.replace(/\/$/, "")}.md`;
-
-    const markdownResponse = await context.env.ASSETS.fetch(
-      new Request(new URL(mdPath, url.origin), request)
-    );
-
-    if (markdownResponse.ok) {
-      const headers = new Headers(markdownResponse.headers);
-      headers.set("Content-Type", "text/markdown; charset=utf-8");
-
-      return new Response(markdownResponse.body, {
-        status: markdownResponse.status,
-        statusText: markdownResponse.statusText,
-        headers,
-      });
-    }
-
-    // Fall back to the normal response if no Markdown file exists.
-  }
-
-  const response = await next();
-
-  // Attach RFC 8288 Link headers to HTML responses.
-  if (response.headers.get("Content-Type")?.includes("text/html")) {
-    const mdUrl =
-      url.pathname === "/"
-        ? "/index.md"
-        : `${url.pathname.replace(/\/$/, "")}.md`;
-
-    const headers = new Headers(response.headers);
-    const existingLink = headers.get("Link");
-
-    const alternateLink =
-      `</llms.txt>; rel="describedby", ` +
-      `<${mdUrl}>; rel="alternate"; type="text/markdown"`;
-
-    headers.set(
-      "Link",
-      existingLink
-        ? `${existingLink}, ${alternateLink}`
-        : alternateLink
-    );
-
-    return new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers,
-    });
-  }
-
-  return response;
-};
+# functions/_middleware.ts
+if (acceptsMarkdown && !url.pathname.endsWith(".md")) {
+  const mdPath = url.pathname === "/" ? "/index.md" : `${url.pathname.replace(/\/$/, "")}.md`;
+  return await context.env.ASSETS.fetch(new Request(new URL(mdPath, url.origin), request));
+}
 ```
 
 When an agent requests Markdown, the edge rewrites the request internally and returns the corresponding static file with `Content-Type: text/markdown; charset=utf-8`. If a Markdown version is unavailable, the request falls back to the normal response.
