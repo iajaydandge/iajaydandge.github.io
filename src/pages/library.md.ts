@@ -1,7 +1,7 @@
 // @see https://docs.astro.build/en/guides/endpoints/#static-file-endpoints
 // @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
 
-import { anime, books, songs, bookmarks } from "@/data/library";
+import { anime, books, songs, bookmarks, fonts } from "@/data/library";
 
 export const prerender = true;
 
@@ -9,7 +9,7 @@ export async function GET() {
   const lines = [
     `# Library`,
     ``,
-    `Things I watch, read, and listen to — anime, books, music, and bookmarks.`,
+    `Things I watch, read, listen to, and use — anime, books, music, bookmarks, and fonts.`,
     ``,
     `## Anime`,
     ``,
@@ -31,6 +31,12 @@ export async function GET() {
     ``,
     ...bookmarks.map(
       (item, index) => `${index + 1}. [${item.title}](${item.url})`
+    ),
+    ``,
+    `## Fonts`,
+    ``,
+    ...fonts.map(
+      (item, index) => `${index + 1}. [${item.title}](${item.url}) — ${item.designer}`
     ),
     ``,
     `## Navigation`,

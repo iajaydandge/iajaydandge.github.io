@@ -24,7 +24,13 @@ export interface BookmarkItem {
   description?: string;
 }
 
-export type MediaItem = AnimeItem | BookItem | SongItem | BookmarkItem;
+export interface FontItem {
+  title: string;
+  url: string;
+  designer: string;
+}
+
+export type MediaItem = AnimeItem | BookItem | SongItem | BookmarkItem | FontItem;
 
 export const anime: AnimeItem[] = [
   {
@@ -145,5 +151,53 @@ export const bookmarks: BookmarkItem[] = [
   {
     title: "Textures - Tactile image filters",
     url: "https://texture.fayaz.workers.dev",
+  },
+];
+
+export const fonts: FontItem[] = [
+  {
+    title: "Inter",
+    url: "https://fonts.google.com/specimen/Inter",
+    designer: "Rasmus Andersson",
+  },
+  {
+    title: "Inter Tight",
+    url: "https://fonts.google.com/specimen/Inter+Tight",
+    designer: "Rasmus Andersson",
+  },
+  {
+    title: "Fira Code",
+    url: "https://fonts.google.com/specimen/Fira+Code",
+    designer: "Nikita Prokopov",
+  },
+  {
+    title: "Source Code Pro",
+    url: "https://fonts.google.com/specimen/Source+Code+Pro",
+    designer: "Paul D. Hunt",
+  },
+  {
+    title: "Cardo",
+    url: "https://fonts.google.com/specimen/Cardo",
+    designer: "David Perry",
+  },
+  {
+    title: "Monaco",
+    url: "https://en.wikipedia.org/wiki/Monaco_(typeface)",
+    designer: "Susan Kare",
+  },
+  {
+    title: "Intel One Mono",
+    url: "https://fonts.google.com/specimen/Intel+One+Mono",
+    designer: "Frere-Jones Type",
+  },
+  {
+    title: "Geist Sans",
+    url: "https://fonts.google.com/specimen/Geist",
+    designer: "Vercel",
+  },
+  {
+    title: "Geist Mono",
+    url: "https://fonts.google.com/specimen/Geist+Mono",
+    designer: "Vercel",
   },
 ];

@@ -4,7 +4,7 @@
 // @see https://lucide.dev/guide/packages/lucide-astro
 
 import Layout from "@/layouts/layout.astro";
-import { anime, books, songs, bookmarks } from "@/data/library";
+import { anime, books, songs, bookmarks, fonts } from "@/data/library";
 import { ArrowUpRight } from "lucide-astro";
 
 const tabs = [
@@ -12,17 +12,18 @@ const tabs = [
   { label: "Books", value: "books", items: books },
   { label: "Music", value: "music", items: songs },
   { label: "Bookmarks", value: "bookmarks", items: bookmarks },
+  { label: "Fonts", value: "fonts", items: fonts },
 ];
 ---
 
 <Layout
   title="Library"
-  description="Things I watch, read, and listen to — anime, books, music, and bookmarks."
+  description="Things I watch, read, listen to, and use — anime, books, music, bookmarks, and fonts."
 >
   <section>
     <h1 class="font-semibold text-2xl mb-2 tracking-tighter">Library</h1>
     <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
-      Things I watch, read, and listen to — anime, books, music, and bookmarks.
+      Things I watch, read, listen to, and use — anime, books, music, bookmarks, and fonts.
     </p>
 
     {/* Tabs */}
@@ -63,6 +64,8 @@ const tabs = [
                 ? item.author
                 : "artist" in item
                 ? item.artist
+                : "designer" in item
+                ? item.designer
                 : "description" in item
                 ? item.description
                 : undefined;

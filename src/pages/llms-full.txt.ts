@@ -3,7 +3,7 @@
 // @see https://github.com/iajaydandge/iajaydandge.github.io/blob/main/AGENTS.md
 
 import { getCollection } from "astro:content";
-import { anime, books, songs, bookmarks } from "@/data/library";
+import { anime, books, songs, bookmarks, fonts } from "@/data/library";
 import { formatDate } from "@/utils/date";
 
 import type { APIContext } from "astro";
@@ -95,7 +95,7 @@ export async function GET(context: APIContext) {
     ``,
     `## Library`,
     ``,
-    `Things I watch, read, and listen to — anime, books, music, and bookmarks.`,
+    `Things I watch, read, listen to, and use — anime, books, music, bookmarks, and fonts.`,
     ``,
     `### Anime`,
     ...anime.map((item, index) => `${index + 1}. ${item.title} (${item.url})`),
@@ -115,6 +115,12 @@ export async function GET(context: APIContext) {
     `### Bookmarks`,
     ...bookmarks.map(
       (item, index) => `${index + 1}. ${item.title} (${item.url})`
+    ),
+    ``,
+    `### Fonts`,
+    ...fonts.map(
+      (item, index) =>
+        `${index + 1}. ${item.title} by ${item.designer} (${item.url})`
     ),
     ``,
     `---`,

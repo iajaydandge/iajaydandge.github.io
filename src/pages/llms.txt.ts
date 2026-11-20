@@ -45,7 +45,7 @@ export async function GET() {
     ``,
     `- [Home](/index.md): Introduction, recently written articles, a few things I've made, and library`,
     `- [Writing](/writing.md): Things I've written, ideas I've explored, and thoughts I've put into words`,
-    `- [Library](/library.md): Things I watch, read, and listen to — anime, books, music, and bookmarks`,
+    `- [Library](/library.md): Things I watch, read, listen to, and use — anime, books, music, bookmarks, and fonts`,
     `- [About](/about.md): Background, things I've made, and connect links`,
     `- [Contact](/contact.md): Direct email, links, time zone, and security disclosure`,
     `- [Privacy](/privacy.md): Privacy policy, analytics disclosure, cookies, and data practices`,
