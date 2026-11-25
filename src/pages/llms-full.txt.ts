@@ -73,6 +73,7 @@ export async function GET(context: APIContext) {
     `- Guess the Number: https://github.com/iajaydandge/guess-the-number — Number guessing game written in different programming languages`,
     `- Slots: https://slots.ajaydandge.dev/ — Checks available court slots where we go to play badminton`,
     `- Gravity Falls: https://pypi.org/project/gravity-falls/ — First published Python package with classic ciphers (Caesar, etc.)`,
+    `- Web Search for ChatGPT: https://github.com/iajaydandge/web-search-for-chatgpt — Chrome extension to augment ChatGPT prompts with live Google search results`,
     ``,
     `### CLI tools`,
     `- Burrow CLI: https://burrow.ajaydandge.dev/ — CLI to query PostgreSQL and MySQL databases directly or via SSH tunnel`,

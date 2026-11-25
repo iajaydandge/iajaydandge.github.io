@@ -61,9 +61,10 @@ Engineering blog and digital corner of Ajay Dandge.
 5. **Path Aliases & Imports**: 
    - Always use `@/` path aliases (e.g., `@/data/library`, `@/components/...`) for internal imports instead of relative paths (`./`, `../`).
    - Always use **named imports** as much as possible; avoid default imports unless strictly required by external library or Astro framework conventions.
-6. **Filename Conventions**:
+6. **Filename & Blog Slug Conventions**:
    - Prefer single-word filenames where practical (e.g., `layout.astro`, `navbar.astro`, `footer.astro`, `pet.astro`).
    - For multi-word filenames, strictly use `kebab-case` (e.g., `theme-toggle.astro`, `content-signals.ts`). Never use camelCase or PascalCase for filenames.
+   - For blog posts (`src/content/blog/<slug>.mdx`), the filename/slug must strictly match the post title in lowercase `kebab-case`, dropping joining words (such as `a`, `an`, `the`, `and`, `or`, `for`, `with`, `of`, `to`, `in`, `on`, `at`).
 7. **Pet Widget Invariants**:
    - Consistent naming across code and components: `oneko`, `oinu`, and `ousagi`.
    - Always transparent: Must strictly remain `pointerEvents: 'none'` at all times so that text selection, copying content, and clicking links are never blocked.

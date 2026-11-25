@@ -1,0 +1,123 @@
+---
+title: "Generating Random Numbers with LFSR"
+publishedAt: "2026-11-18"
+summary: "How Linear Feedback Shift Registers generate pseudorandom bit sequences from simple bitwise shifts, and using them to scramble image pixels."
+---
+
+A while ago, I was surfing the web and stumbled into the topic of pseudorandom number generators (PRNGs). The start of it was a [Computerphile video on Linear Feedback Shift Registers (LFSRs)](https://youtu.be/Ks1pw1X22y4). After watching that, I wanted to read more about it and found an introductory computer science assignment from Princeton University ([COS 126: Linear Feedback Shift Register](https://www.cs.princeton.edu/courses/archive/fall10/cos126/assignments/lfsr.html)) that used an LFSR to encrypt digital images.
+
+I wanted to implement it myself in Python. At the time, there were no AI coding assistants to write or debug code, so I had to work through the bitwise logic and documentation with the limited knowledge I had.
+
+The project became [Photo Magic](https://github.com/iajaydandge/photo-magic). This post covers what an LFSR is, how it produces pseudorandom bitstreams, and how to use it to scramble and recover image pixel data.
+
+---
+
+## What Is a Linear Feedback Shift Register?
+
+An LFSR is a shift register whose input bit is a linear function of its previous state. The most common linear function is the exclusive-or (XOR) operation.
+
+An LFSR consists of:
+1. **A register of bits** of length `N` (e.g., 64 bits on a 64-bit machine).
+2. **A seed value**, which is the non-zero integer that initializes the register.
+3. **A tap position** `T`, which selects a specific bit index inside the register.
+
+On every cycle:
+1. Read the most significant bit (`msb`) and the bit at tap index `T` (`tap_bit`).
+2. XOR them together to produce the feedback bit (`feedback = msb ^ tap_bit`).
+3. Shift the register left by 1 bit, inserting `feedback` into the least significant position.
+4. Yield the shifted-out bit as the next pseudorandom bit.
+
+With appropriately chosen tap positions, an `N`-bit LFSR cycles through `2^N - 1` unique states before repeating (state all-zeros is avoided because XORing zeros produces zero indefinitely). 
+
+Because the feedback logic only requires shift and XOR operations, LFSRs are common in hardware systems:
+- **Telecommunications**: Used in CDMA, GPS signal encoding, and Wi-Fi data scramblers.
+- **Error Detection**: Underlying logic for Cyclic Redundancy Checks (CRC).
+- **Retro Audio**: Sound chips in the Nintendo Entertainment System (NES) and Game Boy used LFSRs to generate white noise for sound effects like explosions and drums.
+
+---
+
+## Implementing the LFSR in Python
+
+The core mechanics can be expressed with standard Python bitwise operators (`>>`, `<<`, `&`, `^`):
+
+```python
+class LFSR:
+    def __init__(self, seed: int, tap: int, bit_length: int = 64):
+        self.state = seed
+        self.bit_length = bit_length
+        self.tap = tap % self.bit_length
+
+    def next_bit(self) -> int:
+        msb = (self.state >> (self.bit_length - 1)) & 1
+        tap_bit = (self.state >> self.tap) & 1
+        feedback = msb ^ tap_bit
+        
+        # Shift left and insert the feedback bit at position 0
+        self.state = ((self.state << 1) | feedback) & ((1 << self.bit_length) - 1)
+        return self.state & 1
+
+    def next_bits(self, k: int) -> int:
+        bit_sequence = 0
+        for _ in range(k):
+            bit_sequence = (bit_sequence << 1) | self.next_bit()
+        return bit_sequence
+```
+
+Calling `next_bits(8)` draws 8 consecutive bits from the register, yielding an integer byte between 0 and 255.
+
+---
+
+## Image Scrambling via Modular Arithmetic
+
+Digital images are matrices of pixels. In standard 24-bit RGB, each pixel has three color channels (Red, Green, Blue), each stored as an 8-bit integer between 0 and 255.
+
+### Encryption
+For each pixel, we draw an 8-bit byte from the LFSR for each channel and apply modular addition:
+
+```
+encrypted_channel = (original_channel + next_bits(8)) % 256
+```
+
+Because the noise added to each channel is pseudorandom and uncorrelated, spatial correlation between adjacent pixels is broken, and the image turns into uniform visual noise.
+
+### Decryption
+Because modular arithmetic is symmetric:
+
+```
+original_channel = (encrypted_channel - next_bits(8)) % 256
+```
+
+When initialized with the exact same seed value (password) and tap code, the LFSR generates the identical pseudorandom byte sequence. Subtracting the values modulo 256 cancels out the added noise and recovers the original pixel values.
+
+```python
+import operator
+from PIL import Image
+
+def encrypt(image_path: str, password: int, tap_code: int, decrypt: bool = False):
+    operation = operator.sub if decrypt else operator.add
+    lfsr_gen = LFSR(password, tap_code)
+
+    img = Image.open(image_path).convert("RGB")
+    img_copy = img.copy()
+
+    for x in range(img_copy.width):
+        for y in range(img_copy.height):
+            red, green, blue = img_copy.getpixel((x, y))
+
+            red   = operation(red,   lfsr_gen.next_bits(8)) % 256
+            green = operation(green, lfsr_gen.next_bits(8)) % 256
+            blue  = operation(blue,  lfsr_gen.next_bits(8)) % 256
+
+            img_copy.putpixel((x, y), (red, green, blue))
+
+    return img_copy
+```
+
+
+---
+
+## References
+
+- Repository: [iajaydandge/photo-magic](https://github.com/iajaydandge/photo-magic)
+- [Computerphile: Random Numbers with Linear Feedback Shift Registers](https://youtu.be/Ks1pw1X22y4)
+- [Princeton University COS 126: Linear Feedback Shift Register Assignment](https://www.cs.princeton.edu/courses/archive/fall10/cos126/assignments/lfsr.html)
