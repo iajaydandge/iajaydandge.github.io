@@ -114,6 +114,16 @@ export const books: BookItem[] = [
     url: "https://www.goodreads.com/book/show/6727757-shriman-yogi",
     author: "Ranjit Desai",
   },
+  {
+    title: "Kagurabachi, Vol. 1",
+    url: "https://www.goodreads.com/book/show/209695974-kagurabachi-vol-1",
+    author: "Takeru Hokazono",
+  },
+  {
+    title: "Kagurabachi, Vol. 2",
+    url: "https://www.goodreads.com/book/show/214151742-kagurabachi-vol-2",
+    author: "Takeru Hokazono",
+  },
 ];
 
 export const songs: SongItem[] = [
